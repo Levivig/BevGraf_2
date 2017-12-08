@@ -1,6 +1,9 @@
 # Declaration of variables
 CC = g++
+INC_DIR = ./include
 CC_FLAGS = -std=c++11
+
+CFLAGS=-I$(INC_DIR)
 
 ifeq ($(shell uname),Darwin)
 	LIBS = -lm -framework OpenGL -framework GLUT
@@ -20,7 +23,7 @@ $(EXEC): $(OBJECTS)
 
 # To obtain object files
 %.o: %.cpp
-	$(CC) -c $(CC_FLAGS) $< -o $@
+	$(CC) $(CFLAGS) -c $(CC_FLAGS) $< -o $@
 
 # To remove generated files
 clean:

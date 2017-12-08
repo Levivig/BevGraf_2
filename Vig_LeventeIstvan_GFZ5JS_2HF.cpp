@@ -14,18 +14,19 @@
 #  include <GL/glut.h>
 #endif
 
-#include "bevgrafmath2017.h"
+#include <bevgrafmath2017.h>
 
 
 GLfloat winWidth = 800.0f, winHeight = 800.0f;
-GLfloat viewportPositionX = 325.0f, viewportPositionY = 300.0f, viewportSize = 150.0f;
+GLfloat windowPosition = -1.0f, windowSize = 2.0f;
+GLfloat viewportPosition = 300.0f, viewportSize = 150.0f;
 
-mat4 Rz, Vo, Vc, w2v, T, TR, coordTrans;
+mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
 
-vec3 camera, Xn, Yn, Zn, up = {0.0f, 0.0f, 1.0f};
+vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = {0.0f, 0.0f, 1.0f};
+vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
 
 bool orthogonal = true;
 
@@ -153,11 +154,10 @@ void initTransformations()
 
 	coordTrans = coordinateTransform(camera, Xn, Yn, Zn);
 
-	w2v = windowToViewport3(vec2(-1.0f, -1.0f), vec2(2.0f, 2.0f),
-                            vec2(viewportPositionX, viewportPositionY), vec2(viewportSize, viewportSize));
+	w2v = windowToViewport3(vec2(windowPosition, windowPosition), vec2(windowSize, windowSize),
+                            vec2(viewportPosition, viewportPosition), vec2(viewportSize, viewportSize));
 
-	T = coordTrans;
-	TR = T * Rz;
+	TR = coordTrans * Rz;
 }
 
 void init()
@@ -177,13 +177,15 @@ void display() {
 
     std::vector<Face> transformedFaces;
 
+    GLfloat c;
+
     for (int i = 0; i < faces.size(); i++) {
 
         Face f = faces[i];
         vec3 result;
 
-        GLfloat c = (dot(normalize(f.normalVecor), normalize(lightSource)) + 1.0f) / 2.0f;
-        f.color = (c,c,c);
+        // GLfloat c = (dot(normalize(f.normalVecor), normalize(lightSource)) + 1.0f) / 2.0f;
+        // f.color = (c,c,c);
 
         for (int j = 0; j < 4; j++) {
 
@@ -191,7 +193,7 @@ void display() {
             vec4 transformedPoint;
 
             if (f.object == 'c') {
-                transformedPoint = T * pointH;
+                transformedPoint = coordTrans * pointH;
             } else {
                 transformedPoint = TR * pointH;
             }
@@ -204,18 +206,18 @@ void display() {
         setNormalVector(f);
         setCenterPoint(f);
 
-        // vec4 lightH = ihToH(lightSource);
-        // vec4 transformedLight;
-        //
-        // if (orthogonal) {
-        //     transformedLight = transpose(inverse(To)) * lightH;
-        // }
-        // else {
-        //     transformedLight = transpose(inverse(Tc)) * lightH;
-        // }
-        //
-        // c = (dot(normalize(f.normalVecor), normalize(transformedLight)) + 1) / 2;
-        // f.color = (c,c,c);
+        vec4 lightH = ihToH(lightSource);
+        vec4 transformedLight;
+
+        if (orthogonal) {
+            transformedLight = transpose(inverse(coordTrans)) * lightH;
+        }
+        else {
+            transformedLight = transpose(inverse(coordTrans)) * lightH;
+        }
+
+        c = (dot(normalize(f.normalVecor), normalize(transformedLight)) + 1) / 2;
+        f.color = (c,c,c);
 
         transformedFaces.push_back(f);
     }

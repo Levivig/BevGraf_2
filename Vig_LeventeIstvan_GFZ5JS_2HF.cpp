@@ -1,196 +1,165 @@
-#include <GLUT/glut.h>
-#include "bevgrafmath2017.h"
-#include <math.h>
-#include <vector>
+//	Vig Levente István
+//	GFZ5JS
+//	2017/18	DE-IK PTI
+//
 
 #include <iostream>
+#include <algorithm>
+#include <cmath>
+#include <vector>
 
-/*======================================*/
+#ifdef __APPLE__
+#  include <GLUT/glut.h>
+#else
+#  include <GL/glut.h>
+#endif
 
-/**
-* ablak mérete
-*/
+#include "bevgrafmath2017.h"
+
+
 GLfloat winWidth = 800.0f, winHeight = 800.0f;
+GLfloat viewportPositionX = 325.0f, viewportPositionY = 300.0f, viewportSize = 150.0f;
 
-/**
-* forgatási mátrixok
-*/
-mat4 Rz;
+mat4 Rz, Vo, Vc, w2v, To, Tc, ToR, TcR, coordTrans;
 
-/**4
-* merõleges és centrális vetítések mátrixai
-*/
-mat4 Vo, Vc;
+vec3 camera, Xn, Yn, Zn, up = {0,0,1};
+GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3;
 
-/**
-* Wtv mátrixok
-*/
-mat4 Wo, Wc;
+vec3 lightSource = {0, 0, 1};
 
-/**
-* a fenti mátrixokból elõállított két transzformációs mátrix
-*/
-mat4 To, Tc, ToR, TcR;
+bool orthogonal = true;
 
-vec3 cam;
-GLfloat u = 0.0f, v = 0.0f;
-GLfloat rCam = 10;
-mat4 koord;
-
-vec3 up = {0,0,1};
-
-vec3 Xn, Yn, Zn;
-
-bool meroleges = true;
-
-vec3 feny = {10, 10, 100};
-
-/**
-* X és Y tengely körüli forgatások
-*/
-GLfloat alphaX = 0.0f, alphaY = 0.0f, deltaAlpha = degToRad(1.0f);
 GLfloat alphaZ = 0.0f;
+GLfloat center = 5.0f;
+GLfloat delta = 0.05f;
 
-/**
-* nézetek koordinátái
-*/
-GLfloat oX = 325.0f, oY = 300.0f, oW = 150.0f, oH = 150.0f;
-GLfloat cX = 325.0f, cY = 300.0f, cW = 150.0f, cH = 150.0f;
-/**
-* centrális vetítés középpontjának Z koordinátája
-*/
-GLfloat center = 5.0f, deltaCenter = 0.05f;
+GLfloat R = 3, r = 0.75;
 
-GLfloat R = 3;
-GLfloat r = 1;
-
-
-vec3 cube[8] = {
-	{-1, -1, -1},
-	{1, -1, -1},
-	{1, 1, -1},
-	{-1, 1, -1},
-	{-1, -1, 1},
-	{1, -1, 1},
-	{1, 1, 1},
-	{-1, 1, 1}
-};
-
-//vec2 drawableCube[8] = {};
+vec3 cube[8] = {{-0.5, -0.5, -0.5}, {0.5, -0.5, -0.5}, {0.5, 0.5, -0.5}, {-0.5, 0.5, -0.5},
+                {-0.5, -0.5, 0.5}, {0.5, -0.5, 0.5}, {0.5, 0.5, 0.5}, {-0.5, 0.5, 0.5}};
 
 struct Face {
-	std::vector<vec3> csucsok(4);
-    vec3 norma;
-    float szin[6];
-	vec3 kozepPont;
+    vec3 vertices[4];
+    vec3 centerPoint;
+    vec3 normalVecor;
+    vec3 color;
+    char object;    //  Cube or Torus
 };
-
-Face CubeFaces[6] = {};
 
 std::vector<Face> allFaces;
 
-void setNormalVectors() {
-    for (int i = 0; i < 6; i++)
-        CubeFaces[i].norma = cross(drawableCube[CubeFaces[i].p.z] - drawableCube[CubeFaces[i].p.x],
-                                   drawableCube[CubeFaces[i].p.y] - drawableCube[CubeFaces[i].p.x]);
+bool pointLessZ(Face a, Face b) {
+    // orthogonal
+	return a.centerPoint.z < b.centerPoint.z;
 }
-/*
-void setKozePont() {
-	for (int i = 0; i < 6; i++)
-        CubeFaces[i].kozepPont = {0.5 * CubeFaces[i].p[0].x + 0.5 * CubeFaces[i].p[2].x,
-								  0.5 * CubeFaces[i].p[0].y + 0.5 * CubeFaces[i].p[2].y,
-							  	  0.5 * CubeFaces[i].p[0].z + 0.5 * CubeFaces[i].p[2].z};
+
+bool centerDist(Face a, Face b) {
+    // perspective
+    return dist(a.centerPoint, (0, 0, center)) > dist(b.centerPoint, (0, 0, center));
 }
-*/
+
+
+void setNormalVector(Face& f) {
+		f.normalVecor = cross(f.vertices[1] - f.vertices[0], f.vertices[2] - f.vertices[0]);
+}
+
+void setCenterPoint(Face& f) {
+	f.centerPoint = (f.vertices[0] + f.vertices[1] + f.vertices[2] + f.vertices[3]) / 4;
+}
+
 void initFaces() {
-	/*
-	CubeFaces[0].p = vec4(0,1,2,3);
-	CubeFaces[1].p = vec4(1,5,6,2);
-	CubeFaces[2].p = vec4(3,2,6,7);
-	CubeFaces[3].p = vec4(4,0,3,7);
-	CubeFaces[4].p = vec4(4,5,1,0);
-	CubeFaces[5].p = vec4(5,4,7,6);
-	*/
+    allFaces.clear();
 
+    Face f;
+    f.object = 'c';
 
-    CubeFaces[0].p[0] = 0;
-    CubeFaces[0].p[1] = 1;
-    CubeFaces[0].p[2] = 2;
-    CubeFaces[0].p[3] = 3;
+    f.vertices[0] = cube[0];
+    f.vertices[1] = cube[1];
+    f.vertices[2] = cube[5];
+    f.vertices[3] = cube[4];
+    allFaces.push_back(f);
 
-    CubeFaces[1].p[0] = 1;
-    CubeFaces[1].p[1] = 5;
-    CubeFaces[1].p[2] = 6;
-    CubeFaces[1].p[3] = 2;
+    f.vertices[0] = cube[1];
+    f.vertices[1] = cube[2];
+    f.vertices[2] = cube[6];
+    f.vertices[3] = cube[5];
+    allFaces.push_back(f);
 
-    CubeFaces[2].p[0] = 3;
-    CubeFaces[2].p[1] = 2;
-    CubeFaces[2].p[2] = 6;
-    CubeFaces[2].p[3] = 7;
+    f.vertices[0] = cube[2];
+    f.vertices[1] = cube[3];
+    f.vertices[2] = cube[7];
+    f.vertices[3] = cube[6];
+    allFaces.push_back(f);
 
-    CubeFaces[3].p[0] = 4;
-    CubeFaces[3].p[1] = 0;
-    CubeFaces[3].p[2] = 3;
-    CubeFaces[3].p[3] = 7;
+    f.vertices[0] = cube[3];
+    f.vertices[1] = cube[0];
+    f.vertices[2] = cube[4];
+    f.vertices[3] = cube[7];
+    allFaces.push_back(f);
 
-    CubeFaces[4].p[0] = 4;
-    CubeFaces[4].p[1] = 5;
-    CubeFaces[4].p[2] = 1;
-    CubeFaces[4].p[3] = 0;
+    f.vertices[0] = cube[1];
+    f.vertices[1] = cube[0];
+    f.vertices[2] = cube[3];
+    f.vertices[3] = cube[2];
+    allFaces.push_back(f);
 
-    CubeFaces[5].p[0] = 5;
-    CubeFaces[5].p[1] = 4;
-    CubeFaces[5].p[2] = 7;
-    CubeFaces[5].p[3] = 6;
+    f.vertices[0] = cube[4];
+    f.vertices[1] = cube[5];
+    f.vertices[2] = cube[6];
+    f.vertices[3] = cube[7];
+    allFaces.push_back(f);
 
+    f.object = 't';
 
-    setNormalVectors();
-	//setKozePont();
+    for (double u = 0; u <= two_pi(); u += pi() / 12) {
+        for (double v = 0; v <= two_pi(); v += pi() / 12) {
+            f.vertices[0] = vec3((R + r * cos(u)) * cos(v),
+                                 (R + r * cos(u)) * sin(v),
+                                  r * sin(u));
+            f.vertices[1] = vec3((R + r * cos(u)) * cos(v + pi() / 12),
+                                 (R + r * cos(u)) * sin(v + pi() / 12),
+                                  r * sin(u));
+            f.vertices[2] = vec3((R + r * cos(u + pi() / 12)) * cos(v + pi() / 12),
+                                 (R + r * cos(u + pi() / 12)) * sin(v + pi() / 12),
+                                  r * sin(u + pi() / 12));
+            f.vertices[3] = vec3((R + r * cos(u + pi() / 12)) * cos(v),
+                                 (R + r * cos(u + pi() / 12)) * sin(v),
+                                  r * sin(u + pi() / 12));
 
-	/*
-    for (int k = 0; k < 6; k++) {
-        CubeFaces[k].szin[0] = k;
-        CubeFaces[k].szin[1] = k + 3;
-        CubeFaces[k].szin[2] = 0.0688 * k;
+            allFaces.push_back(f);
+        }
     }
-	*/
 
+	for (int i = 0; i < allFaces.size(); i++) {
+		setNormalVector(allFaces[i]);
+		setCenterPoint(allFaces[i]);
+	}
 }
 
-/**
-* elõállítja a szükséges mátrixokat
-*/
 void initTransformations()
 {
-	// forgatási mátrixok
 	Rz = rotateZ(alphaZ);
 
-	// vetítési mátrixok
 	Vo = ortho();
 	Vc = perspective(center);
 
-	cam = {rCam * cos(u), rCam * sin(u), v};
+	camera = {rCam * cos(uCam), rCam * sin(uCam), vCam};
 
-	Zn = normalize(-1 * cam);
+	Zn = normalize(vec3(0,0,0) - (-camera));
 	Xn = normalize(cross(up,Zn));
 	Yn = normalize(cross(Zn, Xn));
 
-	koord = coordinateTransform(cam, Xn, Yn, Zn);
+	coordTrans = coordinateTransform(camera, Xn, Yn, Zn);
 
-	// Wtv mátrixok
-	Wo = windowToViewport3(vec2(-1.0f, -1.0f), vec2(2.0f, 2.0f), vec2(oX, oY), vec2(oW, oH));
-	Wc = windowToViewport3(vec2(-1.0f, -1.0f), vec2(2.0f, 2.0f), vec2(cX, cY), vec2(cW, cH));
+	w2v = windowToViewport3(vec2(-1.0f, -1.0f), vec2(2.0f, 2.0f),
+                            vec2(viewportPositionX, viewportPositionY), vec2(viewportSize, viewportSize));
 
-	// merõleges
-	To = Wo * Vo * koord;
-	ToR = Wo * Vo * koord * Rz;
+	To = coordTrans;
+	ToR = To * Rz;
 
-	// centrális
-	Tc = Wc * Vc * koord;
-	TcR = Wc * Vc * koord * Rz;
+	Tc = coordTrans;
+	TcR = Tc * Rz;
 }
-
-/*======================================*/
 
 void init()
 {
@@ -200,198 +169,196 @@ void init()
 	glLoadIdentity();
 	glOrtho(0.0f, winWidth, 0.0f, winHeight, 0.0f, 1.0f);
 
+    initFaces();
 	initTransformations();
 }
 
-void drawCube(mat4 T)
-{
-	for (int i = 0; i < 8; i++) {
+void display() {
+    glClear(GL_COLOR_BUFFER_BIT);
 
-		vec4 pointH = ihToH(cube[i]);
-		vec4 transformedPoint = T * pointH;
+    std::vector<Face> transformedFaces;
 
-		if (transformedPoint.w != 0) {
-			vec3 result = hToIh(transformedPoint);
-			drawableCube[i] = {result.x, result.y};
-		}
 
-	}
+    for (int i = 0; i < allFaces.size(); i++) {
 
-	glPointSize(10);
-	glColor3f(0, 0, 0);
-    glBegin(GL_POINTS);
-    for (int i = 0; i < 8; i++) {
-        glVertex2f(drawableCube[i].x, drawableCube[i].y);
+        Face f = allFaces[i];
+        vec3 result;
+
+        GLfloat c = (dot(normalize(f.normalVecor), normalize(lightSource)) + 1) / 2;
+        f.color = (c,c,c);
+
+        for (int j = 0; j < 4; j++) {
+
+            vec4 pointH = ihToH(f.vertices[j]);
+            vec4 transformedPoint;
+
+            if (f.object == 'c') {
+                if (orthogonal)
+                    transformedPoint = To * pointH;
+                else
+                    transformedPoint = Tc * pointH;
+            } else {
+                if (orthogonal)
+                    transformedPoint = ToR * pointH;
+                else
+                    transformedPoint = TcR * pointH;
+            }
+
+            if (transformedPoint.w != 0) {
+                vec3 result = hToIh(transformedPoint);
+                f.vertices[j] = result;
+            }
+        }
+        setNormalVector(f);
+        setCenterPoint(f);
+
+        // vec4 lightH = ihToH(lightSource);
+        // vec4 transformedLight;
+        //
+        // if (orthogonal) {
+        //     transformedLight = transpose(inverse(To)) * lightH;
+        // }
+        // else {
+        //     transformedLight = transpose(inverse(Tc)) * lightH;
+        // }
+        //
+        // c = (dot(normalize(f.normalVecor), normalize(transformedLight)) + 1) / 2;
+        // f.color = (c,c,c);
+
+        transformedFaces.push_back(f);
     }
-    glEnd();
 
-    for (int i = 0; i < 6; i++) {
-		if (meroleges) {
-			if (CubeFaces[i].norma.z > 0) {
-				GLfloat c = (dot(normalize(CubeFaces[i].norma), normalize(feny)) + 1) / 2;
-				//std::cout << c << '\n';
-	            glBegin(GL_QUADS);
-	            glColor3f(0.5, 0.5, 0.5);
-	            for (int j = 0; j < 4; j++) {
-	                glVertex2f(drawableCube[CubeFaces[i].p[j]].x, drawableCube[CubeFaces[i].p[j]].y);
-	            }
-	            glEnd();
-	        }
-		}
+    if (orthogonal)
+        std::sort(transformedFaces.begin(), transformedFaces.end(), pointLessZ);
+    else
+        std::sort(transformedFaces.begin(), transformedFaces.end(), centerDist);
 
-		else {
-			if ( dot(CubeFaces[i].norma, cam - CubeFaces[i].kozepPont) > 0 ) {
-				GLfloat c = (dot(normalize(CubeFaces[i].norma), normalize(feny)) + 1) / 2;
-				//std::cout << c << '\n';
-				glBegin(GL_QUADS);
-				glColor3f(0.5, 0.5, 0.5);
-				glVertex2f(drawableCube[CubeFaces[i].p.x].x, drawableCube[CubeFaces[i].p.x].y);
-				glVertex2f(drawableCube[CubeFaces[i].p.y].x, drawableCube[CubeFaces[i].p.y].y);
-				glVertex2f(drawableCube[CubeFaces[i].p.z].x, drawableCube[CubeFaces[i].p.z].y);
-				glVertex2f(drawableCube[CubeFaces[i].p.w].x, drawableCube[CubeFaces[i].p.w].y);
-				glEnd();
-			}
-		}
+    for (int i = 0; i < transformedFaces.size(); i++) {
 
-    }
+        Face f = transformedFaces[i];
+        vec3 result;
 
-}
+        for (int j = 0; j < 4; j++) {
 
-void drawTorus(vec3 color, mat4 T)
-{
-	// beállítja a gömb éleinek vastagságát
-	glLineWidth(2.0f);
+            vec4 pointH = ihToH(f.vertices[j]);
+            vec4 transformedPoint;
 
-	// beállítja a kocka színét
-	glColor3f(color.x, color.y, color.z);
+            if (f.object == 'c') {
+                if (orthogonal)
+                    transformedPoint = w2v * Vo * pointH;
+                else
+                    transformedPoint = w2v * Vc * pointH;
+            } else {
+                if (orthogonal)
+                    transformedPoint = w2v * Vo * pointH;
+                else
+                    transformedPoint = w2v * Vc * pointH;
+            }
 
-	//hosszusagi korok
-	for (double u = 0; u <= two_pi() + 0.001; u += pi() / 6)
-	{
-		glBegin(GL_POINTS);
-		for (double v = 0; v <= two_pi() + 0.001; v += pi() / 6)
-		{
-			vec3 pih = vec3(( R + r * cos(u)) * cos(v), ( R + r * cos(u)) * sin(v), r * sin(u));
-			vec4 ph = ihToH(pih);
-			vec4 pt = T * ph;
-			if (pt.w != 0)
-			{
-				vec3 ptih = hToIh(pt);
-				glVertex2f(ptih.x, ptih.y);
-			}
-		}
-		glEnd();
-	}
+            if (transformedPoint.w != 0) {
+                vec3 result = hToIh(transformedPoint);
+                f.vertices[j] = result;
+            }
+        }
 
-	/*
-    //szelessegi korok
-	for (double v = 0; v <= two_pi() + 0.001; v += pi() / 6)
-	{
-		glBegin(GL_POINTS);
-		for (double u = 0; u <= two_pi() + 0.001; u += pi() / 6)
-		{
-			vec3 pih = vec3((R + r* cos(u)) * cos(v), (R + r* cos(u)) * sin(v), r* sin(u));
-			vec4 ph = ihToH(pih);
-			vec4 pt = T * ph;
-			if (pt.w != 0)
-			{
-				vec3 ptih = hToIh(pt);
-				glVertex2f(ptih.x, ptih.y);
-			}
-		}
-		glEnd();
-	}
-	*/
+        if (orthogonal) {
+            if (f.normalVecor.z > 0) {
+                glLineWidth(2.0);
+                glBegin(GL_LINE_LOOP);
+                glColor3f(0.0, 0.0, 0.0);
+                glLineWidth(5);
+                for (int j = 0; j < 4; j++) {
+                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
+                }
+                glEnd();
 
-	Face lapok;
-    torusFaces.clear();
+                glBegin(GL_POLYGON);
+                glColor3f(f.color.x, f.color.y, f.color.z);
+                for (int j = 0; j < 4; j++) {
+                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
+                }
+                glEnd();
+            }
+        } else {
+            if (dot(normalize(f.normalVecor), normalize(vec3(0, 0, center) - f.centerPoint)) > 0) {
+                glLineWidth(2.0);
+                glBegin(GL_LINE_LOOP);
+                glColor3f(0.0, 0.0, 0.0);
+                glLineWidth(5);
+                for (int j = 0; j < 4; j++) {
+                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
+                }
+                glEnd();
 
-    for (double u = 0; u <= two_pi(); u += pi() / 10) {
-
-        for (double v = 0; v <= two_pi(); v += pi() / 10) {
-
-            lapok.p[0] = vec3((R_torus + r_torus * cos(u)) * cos(v), (R_torus + r_torus * cos(u)) * sin(v), r_torus * sin(u));
-
-            lapok.p[1] = vec3((R_torus + r_torus * cos(u)) * cos(v + pi() / 10), (R_torus + r_torus * cos(u)) * sin(v + pi() / 10), r_torus * sin(u));
-
-            lapok.p[2] = vec3((R_torus + r_torus * cos(u + pi() / 10)) * cos(v + pi() / 10), (R_torus + r_torus * cos(u + pi() / 10)) * sin(v + pi() / 10), r_torus * sin(u + pi() / 10));
-
-            lapok.p[3] = vec3((R_torus + r_torus * cos(u + pi() / 10)) * cos(v), (R_torus + r_torus * cos(u + pi() / 10)) * sin(v), r_torus * sin(u + pi() / 10));
-
-            lapok.lapAtlag = (lapok.p[0] + lapok.p[1] + lapok.p[2] + lapok.p[3]) / 4;
-
-//face-ek eltárolása
-            torusFaces.push_back(lapok);
+                glBegin(GL_POLYGON);
+                glColor3f(f.color.x, f.color.y, f.color.z);
+                for (int j = 0; j < 4; j++) {
+                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
+                }
+                glEnd();
+            }
         }
     }
 
-    setNormalVectors();
-
-}
-}
-
-void draw()
-{
-
-	initFaces();
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	if (meroleges) {
-		drawTorus(vec3(0.0f, 0.0f, 0.0f), ToR);
-		drawCube(To);
-	}
-	else{
-		drawTorus(vec3(0.0f, 0.0f, 0.0f), TcR);
-		drawCube(Tc);
-	}
-
-
-	glutSwapBuffers();
+    glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) {
-	case 'q':
+	case 27:
 		exit(0);
 		break;
+
 	case 'a':
-		u -= 0.1;
-		if(u <= 0)
-			u = two_pi();
+		uCam -= delta;
+		if(uCam <= 0)
+			uCam = two_pi();
 		break;
 	case 'd':
-		if(u >= two_pi() )
-			u = 0;
-		u += 0.1;
+		if(uCam >= two_pi() )
+			uCam = 0;
+		uCam += delta;
 		break;
 	case 'w':
-		v -= 0.1;
-		if (v <= -10.0)
-			v = -10.0;
+		vCam += delta;
 		break;
 	case 's':
-		v += 0.1;
-		if (v >= 10.0)
-			v = 10.0;
-		break;
-	case '+':
-		center -= deltaCenter;
-		break;
-	case '-':
-		center += deltaCenter;
-		break;
-	case 'v':
-		meroleges = !meroleges;
+		vCam -= delta;
 		break;
 	case 'r':
-		rCam -= 0.2;
+		rCam -= delta;
 		break;
 	case 't':
-		rCam += 0.2;
+		rCam += delta;
 		break;
+
+    case 'q':
+		center -= delta;
+		break;
+	case 'e':
+		center += delta;
+		break;
+
+	case 'v':
+		orthogonal = !orthogonal;
+		break;
+
+    case 'n':
+        R -= delta;
+        break;
+    case 'm':
+        R += delta;
+        break;
+    case 'j':
+        r -= delta;
+        break;
+    case 'k':
+        r += delta;
+        break;
 	}
 
+    initFaces();
 	initTransformations();
 	glutPostRedisplay();
 }
@@ -414,10 +381,10 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);   // Set display mode.
 	glutInitWindowPosition(50, 100);   // Set top-left display-window position.
 	glutInitWindowSize(winWidth, winHeight);      // Set display-window width and height.
-	glutCreateWindow("Wonderful Sphere"); // Create display window.
+	glutCreateWindow("2. Beadandó - Vig Levente"); // Create display window.
 
 	init();                         // Execute initialization procedure.
-	glutDisplayFunc(draw);       // Send graphics to display window.
+	glutDisplayFunc(display);       // Send graphics to display window.
 	glutKeyboardFunc(keyboard);
 
 	glutTimerFunc(10, update, 0);

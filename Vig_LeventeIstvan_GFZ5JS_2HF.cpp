@@ -26,7 +26,7 @@ mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
+vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
 
 bool orthogonal = true;
 

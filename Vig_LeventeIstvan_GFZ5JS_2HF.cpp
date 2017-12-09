@@ -20,12 +20,12 @@ GLint winWidth = 800, winHeight = 800;
 GLfloat windowPosition = -2.0f, windowSize = 2.0f;
 GLfloat viewportPosition = 200.0f, viewportSize = 200.0f;
 
-mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
+mat4 w2v, Op, Pp, coordTrans, Rz, TR;
 
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
+vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
 
 bool orthogonal = true;
 
@@ -103,8 +103,8 @@ void initFaces() {
 
     f.object = 't';
 
-    for (GLfloat u = 0; u <= two_pi(); u += pi() / 12.0f) {
-        for (GLfloat v = 0; v <= two_pi(); v += pi() / 12.0f) {
+    for (GLfloat u = 0.0f; u <= two_pi(); u += pi() / 12.0f) {
+        for (GLfloat v = 0.0f; v <= two_pi(); v += pi() / 12.0f) {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),
                                  (R + r * cos(u)) * sin(v),
                                   r * sin(u));
@@ -126,8 +126,8 @@ void initFaces() {
 void initTransformations() {
 	Rz = rotateZ(alphaZ);
 
-	Vo = ortho();
-	Vc = perspective(center);
+	Op = ortho();
+	Pp = perspective(center);
 
 	camera = vec3(rCam * cos(uCam), rCam * sin(uCam), vCam);
 
@@ -188,24 +188,15 @@ void display() {
         f.setNormalVector();
         f.setCenterPoint();
 
-        if (orthogonal) {
-            if (f.normalVecor.z > 0) {
-                GLfloat c = (dot(normalize(f.normalVecor),
-                                 normalize(resultLight)) + 1.0f) / 2.0f;
-                f.color = vec3(c, c, c);
+        if (orthogonal && f.normalVecor.z > 0.0f ||
+           !orthogonal && dot(normalize(f.normalVecor),
+           normalize(vec3(0.0f, 0.0f, center) - f.centerPoint)) > 0.0f) {
 
-                transformedFaces.push_back(f);
-            }
-        }
-        else {
-            if (dot(normalize(f.normalVecor),
-                    normalize(vec3(0, 0, center) - f.centerPoint)) > 0) {
-                GLfloat c = (dot(normalize(f.normalVecor),
-                                 normalize(resultLight)) + 1.0f) / 2.0f;
-                f.color = vec3(c, c, c);
+            GLfloat c = (dot(normalize(f.normalVecor),
+                             normalize(resultLight)) + 1.0f) / 2.0f;
+            f.color = vec3(c, c, c);
 
-                transformedFaces.push_back(f);
-            }
+            transformedFaces.push_back(f);
         }
     }
 
@@ -229,9 +220,9 @@ void display() {
             vec4 transformedPoint;
 
             if (orthogonal)
-                transformedPoint = w2v * Vo * pointH;
+                transformedPoint = w2v * Op * pointH;
             else
-                transformedPoint = w2v * Vc * pointH;
+                transformedPoint = w2v * Pp * pointH;
 
             if (transformedPoint.w != 0) {
                 vec3 result = hToIh(transformedPoint);

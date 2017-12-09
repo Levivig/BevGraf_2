@@ -37,9 +37,9 @@ GLfloat alphaZ = 0.0f, delta = 0.05f;
 GLfloat R = 3.0f, r = 0.75f;
 
 vec3 cube[8] = {vec3(-0.5, -0.5, 0.5),  vec3(0.5, -0.5, 0.5),
-                vec3(0.5, 0.5, 0.5),    vec3(-0.5, 0.5, 0.5),
                 vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5),
-                vec3(0.5, 0.5, -0.5),   vec3(-0.5, 0.5, -0.5)};
+                vec3(-0.5, 0.5, 0.5),   vec3(0.5, 0.5, 0.5),
+                vec3(-0.5, 0.5, -0.5),  vec3(0.5, 0.5, -0.5)};
 
 struct Face {
     vec3 vertices[4];
@@ -67,40 +67,40 @@ void initFaces() {
     Face f;
     f.object = 'c';
 
-    f.vertices[0] = cube[0];
-    f.vertices[1] = cube[1];
-    f.vertices[2] = cube[2];
-    f.vertices[3] = cube[3];
-    faces.push_back(f);
-
-    f.vertices[0] = cube[7];
-    f.vertices[1] = cube[4];
-    f.vertices[2] = cube[0];
-    f.vertices[3] = cube[3];
-    faces.push_back(f);
-
-    f.vertices[0] = cube[4];
-    f.vertices[1] = cube[5];
+    f.vertices[0] = cube[2];
+    f.vertices[1] = cube[3];
     f.vertices[2] = cube[1];
     f.vertices[3] = cube[0];
     faces.push_back(f);
 
-    f.vertices[0] = cube[5];
-    f.vertices[1] = cube[6];
-    f.vertices[2] = cube[2];
-    f.vertices[3] = cube[1];
-    faces.push_back(f);
-
-    f.vertices[0] = cube[6];
-    f.vertices[1] = cube[7];
-    f.vertices[2] = cube[3];
-    f.vertices[3] = cube[2];
+    f.vertices[0] = cube[7];
+    f.vertices[1] = cube[5];
+    f.vertices[2] = cube[1];
+    f.vertices[3] = cube[3];
     faces.push_back(f);
 
     f.vertices[0] = cube[7];
     f.vertices[1] = cube[6];
+    f.vertices[2] = cube[4];
+    f.vertices[3] = cube[5];
+    faces.push_back(f);
+
+    f.vertices[0] = cube[2];
+    f.vertices[1] = cube[0];
+    f.vertices[2] = cube[4];
+    f.vertices[3] = cube[6];
+    faces.push_back(f);
+
+    f.vertices[0] = cube[0];
+    f.vertices[1] = cube[1];
     f.vertices[2] = cube[5];
     f.vertices[3] = cube[4];
+    faces.push_back(f);
+
+    f.vertices[0] = cube[3];
+    f.vertices[1] = cube[2];
+    f.vertices[2] = cube[5];
+    f.vertices[3] = cube[7];
     faces.push_back(f);
 
     f.object = 't';

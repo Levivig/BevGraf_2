@@ -124,9 +124,6 @@ void initFaces() {
 void initTransformations() {
 	Rz = rotateZ(alphaZ);
 
-	Op = ortho();
-	Pp = perspective(center);
-
 	camera = vec3(rCam * cos(uCam), rCam * sin(uCam), vCam);
 
 	Zn = normalize(vec3(0.0f, 0.0f, 0.0f) - (-camera));
@@ -134,13 +131,15 @@ void initTransformations() {
 	Yn = normalize(cross(Zn, Xn));
 
 	coordTrans = coordinateTransform(camera, Xn, Yn, Zn);
+    TR = coordTrans * Rz;
+
+    Op = ortho();
+    Pp = perspective(center);
 
 	w2v = windowToViewport3(vec2(windowPosition, windowPosition),
                             vec2(windowSize, windowSize),
                             vec2(viewportPosition, viewportPosition),
                             vec2(viewportSize, viewportSize));
-
-	TR = coordTrans * Rz;
 }
 
 void init() {
@@ -182,9 +181,9 @@ void display() {
         f.setNormalVector();
         f.setCenterPoint();
 
-        if (orthogonal && f.normalVecor.z > 0.0f ||
-           !orthogonal && dot(normalize(f.normalVecor),
-           normalize(vec3(0.0f, 0.0f, center) - f.centerPoint)) > 0.0f) {
+        if ((orthogonal && f.normalVecor.z > 0.0f) ||
+           (!orthogonal && dot(normalize(f.normalVecor),
+           normalize(vec3(0.0f, 0.0f, center) - f.centerPoint)) > 0.0f)) {
 
             GLfloat c = (dot(normalize(f.normalVecor),
                              normalize(resultLight)) + 1.0f) / 2.0f;
@@ -202,8 +201,8 @@ void display() {
     else
         std::sort(transformedFaces.begin(), transformedFaces.end(),
         [](Face a, Face b) {
-            return dist(a.centerPoint, (0.0f, 0.0f, center)) >
-                   dist(b.centerPoint, (0.0f, 0.0f, center));
+            return dist(a.centerPoint, vec3(0.0f, 0.0f, center)) >
+                   dist(b.centerPoint, vec3(0.0f, 0.0f, center));
         });
 
     for (int i = 0; i < transformedFaces.size(); i++) {

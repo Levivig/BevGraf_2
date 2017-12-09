@@ -1,7 +1,7 @@
 # Declaration of variables
 CC = g++
 INC_DIR = ./include
-CC_FLAGS = -std=c++11
+CC_FLAGS = -std=c++11 -Wno-deprecated
 
 CFLAGS=-I$(INC_DIR)
 

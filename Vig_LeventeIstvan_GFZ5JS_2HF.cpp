@@ -57,7 +57,6 @@ struct Face {
     	this->centerPoint = (this->vertices[0] + this->vertices[1] +
                              this->vertices[2] + this->vertices[3]) / 4.0f;
     }
-
 };
 
 std::vector<Face> faces;
@@ -165,13 +164,10 @@ void display() {
     std::vector<Face> transformedFaces;
 
     vec4 lightH = ihToH(-lightSource);
-    vec4 transformedLight;
-    vec3 resultLight;
-
-    transformedLight = transpose(inverse(coordTrans)) * lightH;
-
-    resultLight = (transformedLight.x, transformedLight.y,
-                   transformedLight.z);
+    vec4 transformedLight = transpose(inverse(coordTrans)) * lightH;
+    vec3 resultLight = vec3(transformedLight.x,
+                            transformedLight.y,
+                            transformedLight.z);
 
     for (int i = 0; i < faces.size(); i++) {
 
@@ -195,9 +191,6 @@ void display() {
                 f.vertices[j] = result;
             }
         }
-
-        // setNormalVector(f);
-        // setCenterPoint(f);
 
         f.setNormalVector();
         f.setCenterPoint();
@@ -224,7 +217,6 @@ void display() {
     for (int i = 0; i < transformedFaces.size(); i++) {
 
         Face f = transformedFaces[i];
-        vec3 result;
 
         for (int j = 0; j < 4; j++) {
 

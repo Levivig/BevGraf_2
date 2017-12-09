@@ -25,7 +25,7 @@ mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = vec3(1.0f, 1.0f, 1.0f);
+vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
 
 bool orthogonal = true;
 
@@ -65,10 +65,10 @@ void initFaces() {
     Face f;
     f.object = 'c';
 
-    f.vertices[0] = cube[2];
-    f.vertices[1] = cube[3];
-    f.vertices[2] = cube[1];
-    f.vertices[3] = cube[0];
+    f.vertices[0] = cube[3];
+    f.vertices[1] = cube[1];
+    f.vertices[2] = cube[0];
+    f.vertices[3] = cube[2];
     faces.push_back(f);
 
     f.vertices[0] = cube[7];
@@ -77,10 +77,10 @@ void initFaces() {
     f.vertices[3] = cube[3];
     faces.push_back(f);
 
-    f.vertices[0] = cube[7];
-    f.vertices[1] = cube[6];
-    f.vertices[2] = cube[4];
-    f.vertices[3] = cube[5];
+    f.vertices[0] = cube[6];
+    f.vertices[1] = cube[4];
+    f.vertices[2] = cube[5];
+    f.vertices[3] = cube[7];
     faces.push_back(f);
 
     f.vertices[0] = cube[2];
@@ -97,7 +97,7 @@ void initFaces() {
 
     f.vertices[0] = cube[3];
     f.vertices[1] = cube[2];
-    f.vertices[2] = cube[5];
+    f.vertices[2] = cube[6];
     f.vertices[3] = cube[7];
     faces.push_back(f);
 
@@ -161,7 +161,7 @@ void display() {
 
     std::vector<Face> transformedFaces;
 
-    vec4 lightH = ihToH(-lightSource);
+    vec4 lightH = ihToH(lightSource);
     vec4 transformedLight = transpose(inverse(coordTrans)) * lightH;
     vec3 resultLight = vec3(transformedLight.x,
                             transformedLight.y,
@@ -189,7 +189,7 @@ void display() {
         f.setCenterPoint();
 
         GLfloat c = (dot(normalize(f.normalVecor),
-                         normalize(-resultLight)) + 1.0f) / 2.0f;
+                         normalize(resultLight)) + 1.0f) / 2.0f;
         f.color = vec3(c, c, c);
 
         transformedFaces.push_back(f);
@@ -335,7 +335,7 @@ int main(int argc, char** argv) {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(winWidth, winHeight);
-	glutInitWindowPosition(50, 100);
+	glutInitWindowPosition(100, 100);
 	glutCreateWindow("2. Beadandó - Vig Levente István (GFZ5JS)");
 
 	glutDisplayFunc(display);

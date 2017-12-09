@@ -188,11 +188,25 @@ void display() {
         f.setNormalVector();
         f.setCenterPoint();
 
-        GLfloat c = (dot(normalize(f.normalVecor),
-                         normalize(resultLight)) + 1.0f) / 2.0f;
-        f.color = vec3(c, c, c);
+        if (orthogonal) {
+            if (f.normalVecor.z > 0) {
+                GLfloat c = (dot(normalize(f.normalVecor),
+                                 normalize(resultLight)) + 1.0f) / 2.0f;
+                f.color = vec3(c, c, c);
 
-        transformedFaces.push_back(f);
+                transformedFaces.push_back(f);
+            }
+        }
+        else {
+            if (dot(normalize(f.normalVecor),
+                    normalize(vec3(0, 0, center) - f.centerPoint)) > 0) {
+                GLfloat c = (dot(normalize(f.normalVecor),
+                                 normalize(resultLight)) + 1.0f) / 2.0f;
+                f.color = vec3(c, c, c);
+
+                transformedFaces.push_back(f);
+            }
+        }
     }
 
     if (orthogonal)
@@ -225,38 +239,18 @@ void display() {
             }
         }
 
-        if (orthogonal) {
-            if (f.normalVecor.z > 0) {
-                glLineWidth(2.0f);
-                glBegin(GL_LINE_LOOP);
-                glColor3f(0.0f, 0.0f, 0.0f);
-                for (int j = 0; j < 4; j++)
-                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                glEnd();
+        glLineWidth(2.0f);
+        glBegin(GL_LINE_LOOP);
+        glColor3f(0.0f, 0.0f, 0.0f);
+        for (int j = 0; j < 4; j++)
+            glVertex2f(f.vertices[j].x, f.vertices[j].y);
+        glEnd();
 
-                glBegin(GL_POLYGON);
-                glColor3f(f.color.x, f.color.y, f.color.z);
-                for (int j = 0; j < 4; j++)
-                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                glEnd();
-            }
-        } else {
-            if (dot(normalize(f.normalVecor),
-                    normalize(vec3(0, 0, center) - f.centerPoint)) > 0) {
-                glLineWidth(2.0f);
-                glBegin(GL_LINE_LOOP);
-                glColor3f(0.0, 0.0, 0.0);
-                for (int j = 0; j < 4; j++)
-                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                glEnd();
-
-                glBegin(GL_POLYGON);
-                glColor3f(f.color.x, f.color.y, f.color.z);
-                for (int j = 0; j < 4; j++)
-                    glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                glEnd();
-            }
-        }
+        glBegin(GL_POLYGON);
+        glColor3f(f.color.x, f.color.y, f.color.z);
+        for (int j = 0; j < 4; j++)
+            glVertex2f(f.vertices[j].x, f.vertices[j].y);
+        glEnd();
     }
 
     glutSwapBuffers();

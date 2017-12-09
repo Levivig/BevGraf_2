@@ -19,8 +19,8 @@
 
 GLint winWidth = 800, winHeight = 800;
 
-GLfloat windowPosition = -1.0f, windowSize = 2.0f;
-GLfloat viewportPosition = 300.0f, viewportSize = 150.0f;
+GLfloat windowPosition = -2.0f, windowSize = 2.0f;
+GLfloat viewportPosition = 200.0f, viewportSize = 200.0f;
 
 mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
 

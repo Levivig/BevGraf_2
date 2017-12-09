@@ -102,7 +102,6 @@ void initFaces() {
     faces.push_back(f);
 
     f.object = 't';
-
     for (GLfloat u = 0.0f; u <= two_pi(); u += pi() / 12.0f) {
         for (GLfloat v = 0.0f; v <= two_pi(); v += pi() / 12.0f) {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),
@@ -161,8 +160,7 @@ void display() {
 
     std::vector<Face> transformedFaces;
 
-    vec4 lightH = ihToH(lightSource);
-    vec4 transformedLight = transpose(inverse(coordTrans)) * lightH;
+    vec4 transformedLight = transpose(inverse(coordTrans)) * ihToH(lightSource);
     vec3 resultLight = vec3(transformedLight.x,
                             transformedLight.y,
                             transformedLight.z);
@@ -171,18 +169,15 @@ void display() {
         Face f = faces[i];
 
         for (int j = 0; j < 4; j++) {
-            vec4 pointH = ihToH(f.vertices[j]);
-            vec4 transformedPoint;
+            vec4 transformedPoint = ihToH(f.vertices[j]);;
 
             if (f.object == 'c')
-                transformedPoint = coordTrans * pointH;
+                transformedPoint = coordTrans * transformedPoint;
             else
-                transformedPoint = TR * pointH;
+                transformedPoint = TR * transformedPoint;
 
-            if (transformedPoint.w != 0.0f) {
-                vec3 result = hToIh(transformedPoint);
-                f.vertices[j] = result;
-            }
+            if (transformedPoint.w != 0.0f)
+                f.vertices[j] = hToIh(transformedPoint);;
         }
 
         f.setNormalVector();
@@ -216,18 +211,15 @@ void display() {
         Face f = transformedFaces[i];
 
         for (int j = 0; j < 4; j++) {
-            vec4 pointH = ihToH(f.vertices[j]);
-            vec4 transformedPoint;
+            vec4 transformedPoint = ihToH(f.vertices[j]);;
 
             if (orthogonal)
-                transformedPoint = w2v * Op * pointH;
+                transformedPoint = w2v * Op * transformedPoint;
             else
-                transformedPoint = w2v * Pp * pointH;
+                transformedPoint = w2v * Pp * transformedPoint;
 
-            if (transformedPoint.w != 0) {
-                vec3 result = hToIh(transformedPoint);
-                f.vertices[j] = result;
-            }
+            if (transformedPoint.w != 0)
+                f.vertices[j] = hToIh(transformedPoint);;
         }
 
         glLineWidth(2.0f);
@@ -249,56 +241,30 @@ void display() {
 
 void keyboard(unsigned char key, int x, int y) {
 	switch (key) {
-	case 27:
-		exit(0);
-		break;
+    	case 27: exit(0); break;
 
-	case 'a':
-		uCam -= delta;
-		if(uCam <= 0) uCam = two_pi();
-		break;
-	case 'd':
-		if(uCam >= two_pi()) uCam = 0;
-		uCam += delta;
-		break;
-	case 'w':
-		vCam += delta;
-		break;
-	case 's':
-		vCam -= delta;
-		break;
-	case 'r':
-		rCam -= delta;
-        if (rCam < 0.1f) rCam = 0.1f;
-		break;
-	case 't':
-		rCam += delta;
-		break;
+    	case 'a': uCam -= delta;
+    		if(uCam <= 0) uCam = two_pi(); break;
+    	case 'd': uCam += delta;
+    		if(uCam >= two_pi()) uCam = 0; break;
 
-    case 'q':
-		center -= delta;
-        if (center < 0.1f) center = 0.1f;
-		break;
-	case 'e':
-		center += delta;
-		break;
+    	case 'w': vCam += delta; break;
+    	case 's': vCam -= delta; break;
 
-	case 'v':
-		orthogonal = !orthogonal;
-		break;
+    	case 'r': rCam -= delta;
+            if (rCam < 0.1f) rCam = 0.1f; break;
+    	case 't': rCam += delta; break;
 
-    case 'n':
-        R -= delta;
-        break;
-    case 'm':
-        R += delta;
-        break;
-    case 'j':
-        r -= delta;
-        break;
-    case 'k':
-        r += delta;
-        break;
+        case 'q':center -= delta;
+            if (center < 0.1f) center = 0.1f; break;
+    	case 'e': center += delta; break;
+
+        case 'n': R -= delta; break;
+        case 'm': R += delta; break;
+        case 'j': r -= delta; break;
+        case 'k': r += delta; break;
+
+        case 'v': orthogonal = !orthogonal; break;
 	}
 
     initFaces();

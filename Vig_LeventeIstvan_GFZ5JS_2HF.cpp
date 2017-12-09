@@ -3,6 +3,7 @@
 //	2017/18	DE-IK PTI
 //
 
+#include <iostream>
 #include <algorithm>    // std::sort
 #include <vector>   // std::vector
 
@@ -47,8 +48,8 @@ struct Face {
     char object;    //  Cube or Torus
 
     void setNormalVector() {
-    		this->normalVecor = cross(this->vertices[1] - this->vertices[0],
-                                      this->vertices[2] - this->vertices[0]);
+    	this->normalVecor = cross(this->vertices[1] - this->vertices[0],
+                                  this->vertices[2] - this->vertices[0]);
     }
 
     void setCenterPoint() {
@@ -244,24 +245,27 @@ void keyboard(unsigned char key, int x, int y) {
     	case 27: exit(0); break;
 
     	case 'a': uCam -= delta;
-    		if(uCam <= 0) uCam = two_pi(); break;
+    		      if(uCam <= 0) uCam = two_pi(); break;
     	case 'd': uCam += delta;
-    		if(uCam >= two_pi()) uCam = 0; break;
+    		      if(uCam >= two_pi()) uCam = 0; break;
 
     	case 'w': vCam += delta; break;
     	case 's': vCam -= delta; break;
 
     	case 'r': rCam -= delta;
-            if (rCam < 0.1f) rCam = 0.1f; break;
+                  if (rCam < 0.1f) rCam = 0.1f; break;
     	case 't': rCam += delta; break;
 
-        case 'q':center -= delta;
-            if (center < 0.1f) center = 0.1f; break;
+        case 'q': center -= delta;
+                  if (center < 0.1f) center = 0.1f; break;
     	case 'e': center += delta; break;
 
-        case 'n': R -= delta; break;
+        case 'n': R -= delta;
+                  if (R < 0.4f) R = 0.4f; break;
         case 'm': R += delta; break;
-        case 'j': r -= delta; break;
+
+        case 'j': r -= delta;
+                  if (r < 0.01f) r = 0.01f; break;
         case 'k': r += delta; break;
 
         case 'v': orthogonal = !orthogonal; break;

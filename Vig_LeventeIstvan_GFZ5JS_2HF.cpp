@@ -3,9 +3,9 @@
 //	2017/18	DE-IK PTI
 //
 
-#include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 #include <vector>
 
 #ifdef __APPLE__
@@ -27,7 +27,7 @@ mat4 w2v, Vo, Vc, coordTrans, Rz, TR;
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = vec3(0.5f, 1.0f, 1.0f);
+vec3 lightSource = vec3(1.0f, 1.0f, 1.0f);
 
 bool orthogonal = true;
 
@@ -152,7 +152,7 @@ void init() {
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(0.0f, winWidth, 0.0f, winHeight, 0.0f, 1.0f);
+	glOrtho(0.0f, winWidth, 0.0f, winHeight, 0.0f, 2.0f);
 
     initFaces();
 	initTransformations();
@@ -170,14 +170,9 @@ void display() {
                             transformedLight.z);
 
     for (int i = 0; i < faces.size(); i++) {
-
         Face f = faces[i];
 
-        // GLfloat c = (dot(normalize(f.normalVecor), normalize(lightSource)) + 1.0f) / 2.0f;
-        // f.color = (c,c,c);
-
         for (int j = 0; j < 4; j++) {
-
             vec4 pointH = ihToH(f.vertices[j]);
             vec4 transformedPoint;
 
@@ -196,7 +191,7 @@ void display() {
         f.setCenterPoint();
 
         GLfloat c = (dot(normalize(f.normalVecor),
-                         normalize(resultLight)) + 1.0f) / 2.0f;
+                         normalize(-resultLight)) + 1.0f) / 2.0f;
         f.color = vec3(c, c, c);
 
         transformedFaces.push_back(f);
@@ -215,11 +210,9 @@ void display() {
         });
 
     for (int i = 0; i < transformedFaces.size(); i++) {
-
         Face f = transformedFaces[i];
 
         for (int j = 0; j < 4; j++) {
-
             vec4 pointH = ihToH(f.vertices[j]);
             vec4 transformedPoint;
 
@@ -239,16 +232,14 @@ void display() {
                 glLineWidth(2.0f);
                 glBegin(GL_LINE_LOOP);
                 glColor3f(0.0f, 0.0f, 0.0f);
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 4; j++)
                     glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                }
                 glEnd();
 
                 glBegin(GL_POLYGON);
                 glColor3f(f.color.x, f.color.y, f.color.z);
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 4; j++)
                     glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                }
                 glEnd();
             }
         } else {
@@ -257,16 +248,14 @@ void display() {
                 glLineWidth(2.0f);
                 glBegin(GL_LINE_LOOP);
                 glColor3f(0.0, 0.0, 0.0);
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 4; j++)
                     glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                }
                 glEnd();
 
                 glBegin(GL_POLYGON);
                 glColor3f(f.color.x, f.color.y, f.color.z);
-                for (int j = 0; j < 4; j++) {
+                for (int j = 0; j < 4; j++)
                     glVertex2f(f.vertices[j].x, f.vertices[j].y);
-                }
                 glEnd();
             }
         }
@@ -335,7 +324,6 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void update(int v) {
-
     alphaZ += 0.01f;
     if(alphaZ >= two_pi()) alphaZ = 0.0f;
 

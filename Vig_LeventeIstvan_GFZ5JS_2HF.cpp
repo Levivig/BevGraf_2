@@ -25,7 +25,7 @@ mat4 w2v, Op, Pp, coordTrans, Rz, TR;
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
 
-vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
+vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
 
 bool orthogonal = true;
 
@@ -102,7 +102,7 @@ void initFaces() {
     faces.push_back(f);
 
     f.object = 't';
-    
+
     for (GLfloat u = 0.0f; u <= two_pi(); u += pi() / 12.0f) {
         for (GLfloat v = 0.0f; v <= two_pi(); v += pi() / 12.0f) {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),

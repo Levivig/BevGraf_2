@@ -47,19 +47,20 @@ struct Face {
     vec3 normalVecor;
     vec3 color;
     char object;    //  Cube or Torus
+
+    void setNormalVector() {
+    		this->normalVecor = cross(this->vertices[1] - this->vertices[0],
+                                      this->vertices[2] - this->vertices[0]);
+    }
+
+    void setCenterPoint() {
+    	this->centerPoint = (this->vertices[0] + this->vertices[1] +
+                             this->vertices[2] + this->vertices[3]) / 4.0f;
+    }
+
 };
 
 std::vector<Face> faces;
-
-void setNormalVector(Face& f) {
-		f.normalVecor = cross(f.vertices[1] - f.vertices[0],
-                              f.vertices[2] - f.vertices[0]);
-}
-
-void setCenterPoint(Face& f) {
-	f.centerPoint = (f.vertices[0] + f.vertices[1] +
-                     f.vertices[2] + f.vertices[3]) / 4.0f;
-}
 
 void initFaces() {
     faces.clear();
@@ -195,8 +196,11 @@ void display() {
             }
         }
 
-        setNormalVector(f);
-        setCenterPoint(f);
+        // setNormalVector(f);
+        // setCenterPoint(f);
+
+        f.setNormalVector();
+        f.setCenterPoint();
 
         GLfloat c = (dot(normalize(f.normalVecor),
                          normalize(resultLight)) + 1.0f) / 2.0f;

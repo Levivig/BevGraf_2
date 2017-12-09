@@ -3,7 +3,6 @@
 //	2017/18	DE-IK PTI
 //
 
-#include <iostream>
 #include <algorithm>    // std::sort
 #include <vector>   // std::vector
 
@@ -117,7 +116,6 @@ void initFaces() {
             f.vertices[3] = vec3((R + r * cos(u + pi() / 12.0f)) * cos(v),
                                  (R + r * cos(u + pi() / 12.0f)) * sin(v),
                                   r * sin(u + pi() / 12.0f));
-
             faces.push_back(f);
         }
     }
@@ -256,14 +254,12 @@ void keyboard(unsigned char key, int x, int y) {
                   if (rCam < 0.1f) rCam = 0.1f; break;
     	case 't': rCam += delta; break;
 
-        case 'q': center -= delta;
-                  if (center < 0.1f) center = 0.1f; break;
+        case 'q': center -= delta; break;
     	case 'e': center += delta; break;
 
         case 'n': R -= delta;
                   if (R < 0.4f) R = 0.4f; break;
         case 'm': R += delta; break;
-
         case 'j': r -= delta;
                   if (r < 0.01f) r = 0.01f; break;
         case 'k': r += delta; break;

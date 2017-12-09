@@ -51,18 +51,6 @@ struct Face {
 
 std::vector<Face> faces;
 
-bool pointLessZ(Face a, Face b) {
-    // orthogonal
-	return a.centerPoint.z < b.centerPoint.z;
-}
-
-bool centerDist(Face a, Face b) {
-    // perspective
-    return dist(a.centerPoint, (0.0f, 0.0f, center)) >
-           dist(b.centerPoint, (0.0f, 0.0f, center));
-}
-
-
 void setNormalVector(Face& f) {
 		f.normalVecor = cross(f.vertices[1] - f.vertices[0],
                               f.vertices[2] - f.vertices[0]);
@@ -218,9 +206,16 @@ void display() {
     }
 
     if (orthogonal)
-        std::sort(transformedFaces.begin(), transformedFaces.end(), pointLessZ);
+        std::sort(transformedFaces.begin(), transformedFaces.end(),
+        [](Face a, Face b) {
+            return a.centerPoint.z < b.centerPoint.z;
+        });
     else
-        std::sort(transformedFaces.begin(), transformedFaces.end(), centerDist);
+        std::sort(transformedFaces.begin(), transformedFaces.end(),
+        [](Face a, Face b) {
+            return dist(a.centerPoint, (0.0f, 0.0f, center)) >
+                   dist(b.centerPoint, (0.0f, 0.0f, center));
+        });
 
     for (int i = 0; i < transformedFaces.size(); i++) {
 

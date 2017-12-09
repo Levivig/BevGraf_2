@@ -3,8 +3,8 @@
 //	2017/18	DE-IK PTI
 //
 
-#include <algorithm>    // std::sort
-#include <vector>   // std::vector
+#include <algorithm>    // std::sort()
+#include <vector>   // std::vector<>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -102,6 +102,7 @@ void initFaces() {
     faces.push_back(f);
 
     f.object = 't';
+    
     for (GLfloat u = 0.0f; u <= two_pi(); u += pi() / 12.0f) {
         for (GLfloat v = 0.0f; v <= two_pi(); v += pi() / 12.0f) {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),

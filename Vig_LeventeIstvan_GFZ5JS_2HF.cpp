@@ -3,10 +3,8 @@
 //	2017/18	DE-IK PTI
 //
 
-#include <algorithm>
-#include <cmath>
-#include <iostream>
-#include <vector>
+#include <algorithm>    // std::sort
+#include <vector>   // std::vector
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>

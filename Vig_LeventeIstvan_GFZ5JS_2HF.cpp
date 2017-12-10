@@ -272,7 +272,7 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void update(int v) {
-    alphaZ += 0.001f;
+    alphaZ += 0.002f;
     if(alphaZ >= two_pi()) alphaZ = 0.0f;
 
     initTransformations();

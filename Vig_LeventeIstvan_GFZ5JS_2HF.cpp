@@ -5,6 +5,7 @@
 
 #include <algorithm>    // std::sort()
 #include <vector>   // std::vector<>
+#include <iostream>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -17,13 +18,13 @@
 
 GLint winWidth = 800, winHeight = 800;
 
-GLfloat windowPosition = -2.0f, windowSize = 2.0f;
-GLfloat viewportPosition = 200.0f, viewportSize = 200.0f;
+vec2 windowPosition = vec2(-2.0f, -2.0), windowSize = vec2(2.0f, 2.0f);
+vec2 viewportPosition = vec2(200.0f, 200.0f), viewportSize = vec2(200.0f, 200.0f);
 
 mat4 w2v, Op, Pp, coordTrans, Rz, TR;
 
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
-GLfloat uCam = 0.0f, vCam = 0.0f, rCam = 3.0f;
+GLfloat uCam = 5.5f, vCam = 1.5f, rCam = 3.0f;
 
 vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
 
@@ -32,7 +33,7 @@ bool orthogonal = true;
 GLfloat center = 5.0f;
 GLfloat alphaZ = 0.0f, delta = 0.05f;
 
-GLfloat R = 3.0f, r = 0.75f;
+GLfloat R = 3.0f, r = 1.0f;
 
 vec3 cube[8] = {vec3(-0.5, -0.5, 0.5),  vec3(0.5, -0.5, 0.5),
                 vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5),
@@ -137,10 +138,8 @@ void initTransformations() {
     Op = ortho();
     Pp = perspective(center);
 
-	w2v = windowToViewport3(vec2(windowPosition, windowPosition),
-                            vec2(windowSize, windowSize),
-                            vec2(viewportPosition, viewportPosition),
-                            vec2(viewportSize, viewportSize));
+	w2v = windowToViewport3(windowPosition, windowSize,
+                            viewportPosition, viewportSize);
 }
 
 void init() {

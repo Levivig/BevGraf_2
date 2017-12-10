@@ -33,7 +33,7 @@ bool orthogonal = true;
 GLfloat center = 5.0f;
 GLfloat alphaZ = 0.0f, delta = 0.05f;
 
-GLfloat R = 3.0f, r = 1.0f;
+GLfloat R = 2.0f, r = 0.66f;
 
 vec3 cube[8] = {vec3(-0.5, -0.5, 0.5),  vec3(0.5, -0.5, 0.5),
                 vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5),
@@ -216,7 +216,7 @@ void display() {
             else
                 transformedPoint = w2v * Pp * transformedPoint;
 
-            if (transformedPoint.w != 0)
+            if (transformedPoint.w != 0.0f)
                 f.vertices[j] = hToIh(transformedPoint);;
         }
 
@@ -272,7 +272,7 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void update(int v) {
-    alphaZ += 0.01f;
+    alphaZ += 0.001f;
     if(alphaZ >= two_pi()) alphaZ = 0.0f;
 
     initTransformations();

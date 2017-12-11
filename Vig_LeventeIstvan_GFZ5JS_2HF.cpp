@@ -1,4 +1,4 @@
-//	Vig Levente István
+//	Vig Levente Istvan
 //	GFZ5JS
 //	2017/18	DE-IK PTI
 //
@@ -287,7 +287,7 @@ int main(int argc, char** argv) {
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(winWidth, winHeight);
 	glutInitWindowPosition(100, 100);
-	glutCreateWindow("2. Beadandó - Vig Levente István (GFZ5JS)");
+	glutCreateWindow("2. Beadando - Vig Levente Istvan (GFZ5JS)");
 
 	glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);

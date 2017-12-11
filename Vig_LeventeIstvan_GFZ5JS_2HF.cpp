@@ -30,7 +30,7 @@ vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
 bool orthogonal = true;
 
 GLfloat center = 5.0f;
-GLfloat alphaZ = 0.0f, delta = 0.05f;
+GLfloat alphaZ = 0.0f, delta = 0.05f, deltaT = pi() / 24.0f;
 
 GLfloat R = 2.0f, r = 0.66f;
 
@@ -103,20 +103,20 @@ void initFaces() {
 
     f.object = 't';
 
-    for (GLfloat u = 0.0f; u <= two_pi(); u += pi() / 12.0f) {
-        for (GLfloat v = 0.0f; v <= two_pi(); v += pi() / 12.0f) {
+    for (GLfloat u = 0.0f; u <= two_pi(); u += deltaT) {
+        for (GLfloat v = 0.0f; v <= two_pi(); v += deltaT) {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),
                                  (R + r * cos(u)) * sin(v),
                                   r * sin(u));
-            f.vertices[1] = vec3((R + r * cos(u)) * cos(v + pi() / 12.0f),
-                                 (R + r * cos(u)) * sin(v + pi() / 12.0f),
+            f.vertices[1] = vec3((R + r * cos(u)) * cos(v + deltaT),
+                                 (R + r * cos(u)) * sin(v + deltaT),
                                   r * sin(u));
-            f.vertices[2] = vec3((R + r * cos(u + pi() / 12.0f)) * cos(v + pi() / 12.0f),
-                                 (R + r * cos(u + pi() / 12.0f)) * sin(v + pi() / 12.0f),
-                                  r * sin(u + pi() / 12.0f));
-            f.vertices[3] = vec3((R + r * cos(u + pi() / 12.0f)) * cos(v),
-                                 (R + r * cos(u + pi() / 12.0f)) * sin(v),
-                                  r * sin(u + pi() / 12.0f));
+            f.vertices[2] = vec3((R + r * cos(u + deltaT)) * cos(v + deltaT),
+                                 (R + r * cos(u + deltaT)) * sin(v + deltaT),
+                                  r * sin(u + deltaT));
+            f.vertices[3] = vec3((R + r * cos(u + deltaT)) * cos(v),
+                                 (R + r * cos(u + deltaT)) * sin(v),
+                                  r * sin(u + deltaT));
             faces.push_back(f);
         }
     }
@@ -250,13 +250,15 @@ void keyboard(unsigned char key, int x, int y) {
 
     	case 'r': rCam -= delta;
                   if (rCam < 0.1f) rCam = 0.1f; break;
-    	case 't': rCam += delta; break;
+    	case 't': rCam += delta;
+                  if (rCam > 20.0f) rCam = 20.0f; break;
 
-        case 'q': center -= delta; break;
+        case 'q': center -= delta;
+                  if (center < 0.01f) center = 0.01; break;
     	case 'e': center += delta; break;
 
         case 'n': R -= delta;
-                  if (R < 0.4f) R = 0.4f; break;
+                  if (R < 1.0f) R = 1.0f; break;
         case 'm': R += delta; break;
         case 'j': r -= delta;
                   if (r < 0.01f) r = 0.01f; break;

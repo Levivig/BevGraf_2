@@ -65,18 +65,18 @@ inline bool operator!=(vec2 v1, vec2 v2)
 inline vec2 operator+(vec2 v1, vec2 v2)
 {
 	return vec2
-	{
-		v1[0] + v2[0],
-		v1[1] + v2[1]
+	{ 
+		v1[0] + v2[0], 
+		v1[1] + v2[1] 
 	};
 }
 
 inline vec2 operator-(vec2 v1, vec2 v2)
 {
 	return vec2
-	{
-		v1[0] - v2[0],
-		v1[1] - v2[1]
+	{ 
+		v1[0] - v2[0], 
+		v1[1] - v2[1] 
 	};
 }
 
@@ -95,8 +95,8 @@ inline vec2& operator-=(vec2& v1, vec2 v2)
 inline vec2 operator+(vec2 v, float f)
 {
 	return vec2
-	{
-		v[0] + f,
+	{ 
+		v[0] + f, 
 		v[1] + f
 	};
 }
@@ -104,8 +104,8 @@ inline vec2 operator+(vec2 v, float f)
 inline vec2 operator-(vec2 v, float f)
 {
 	return vec2
-	{
-		v[0] - f,
+	{ 
+		v[0] - f, 
 		v[1] - f
 	};
 }
@@ -113,8 +113,8 @@ inline vec2 operator-(vec2 v, float f)
 inline vec2 operator*(vec2 v, float f)
 {
 	return vec2
-	{
-		v[0] * f,
+	{ 
+		v[0] * f, 
 		v[1] * f
 	};
 }
@@ -122,8 +122,8 @@ inline vec2 operator*(vec2 v, float f)
 inline vec2 operator/(vec2 v, float f)
 {
 	return vec2
-	{
-		v[0] / f,
+	{ 
+		v[0] / f, 
 		v[1] / f
 	};
 }
@@ -131,8 +131,8 @@ inline vec2 operator/(vec2 v, float f)
 inline vec2 operator+(float f, vec2 v)
 {
 	return vec2
-	{
-		f + v[0],
+	{ 
+		f + v[0], 
 		f + v[1]
 	};
 }
@@ -140,8 +140,8 @@ inline vec2 operator+(float f, vec2 v)
 inline vec2 operator-(float f, vec2 v)
 {
 	return vec2
-	{
-		f - v[0],
+	{ 
+		f - v[0], 
 		f - v[1]
 	};
 }
@@ -149,8 +149,8 @@ inline vec2 operator-(float f, vec2 v)
 inline vec2 operator*(float f, vec2 v)
 {
 	return vec2
-	{
-		f * v[0],
+	{ 
+		f * v[0], 
 		f * v[1]
 	};
 }
@@ -158,8 +158,8 @@ inline vec2 operator*(float f, vec2 v)
 inline vec2 operator/(float f, vec2 v)
 {
 	return vec2
-	{
-		f / v[0],
+	{ 
+		f / v[0], 
 		f / v[1]
 	};
 }
@@ -250,9 +250,9 @@ inline bool operator!=(vec3 v1, vec3 v2)
 inline vec3 operator+(vec3 v1, vec3 v2)
 {
 	return vec3
-	{
-		v1[0] + v2[0],
-		v1[1] + v2[1],
+	{ 
+		v1[0] + v2[0], 
+		v1[1] + v2[1], 
 		v1[2] + v2[2]
 	};
 }
@@ -260,8 +260,8 @@ inline vec3 operator+(vec3 v1, vec3 v2)
 inline vec3 operator-(vec3 v1, vec3 v2)
 {
 	return vec3
-	{
-		v1[0] - v2[0],
+	{ 
+		v1[0] - v2[0], 
 		v1[1] - v2[1],
 		v1[2] - v2[2]
 	};
@@ -282,7 +282,7 @@ inline vec3& operator-=(vec3& v1, vec3 v2)
 inline vec3 operator+(vec3 v, float f)
 {
 	return vec3
-	{
+	{ 
 		v[0] + f,
 		v[1] + f,
 		v[2] + f
@@ -292,7 +292,7 @@ inline vec3 operator+(vec3 v, float f)
 inline vec3 operator-(vec3 v, float f)
 {
 	return vec3
-	{
+	{ 
 		v[0] - f,
 		v[1] - f,
 		v[2] - f
@@ -302,7 +302,7 @@ inline vec3 operator-(vec3 v, float f)
 inline vec3 operator*(vec3 v, float f)
 {
 	return vec3
-	{
+	{ 
 		v[0] * f,
 		v[1] * f,
 		v[2] * f
@@ -312,7 +312,7 @@ inline vec3 operator*(vec3 v, float f)
 inline vec3 operator/(vec3 v, float f)
 {
 	return vec3
-	{
+	{ 
 		v[0] / f,
 		v[1] / f,
 		v[2] / f
@@ -322,7 +322,7 @@ inline vec3 operator/(vec3 v, float f)
 inline vec3 operator+(float f, vec3 v)
 {
 	return vec3
-	{
+	{ 
 		f + v[0],
 		f + v[1],
 		f + v[2]
@@ -332,7 +332,7 @@ inline vec3 operator+(float f, vec3 v)
 inline vec3 operator-(float f, vec3 v)
 {
 	return vec3
-	{
+	{ 
 		f - v[0],
 		f - v[1],
 		f - v[2]
@@ -342,7 +342,7 @@ inline vec3 operator-(float f, vec3 v)
 inline vec3 operator*(float f, vec3 v)
 {
 	return vec3
-	{
+	{ 
 		f * v[0],
 		f * v[1],
 		f * v[2]
@@ -352,7 +352,7 @@ inline vec3 operator*(float f, vec3 v)
 inline vec3 operator/(float f, vec3 v)
 {
 	return vec3
-	{
+	{ 
 		f / v[0],
 		f / v[1],
 		f / v[2]
@@ -455,10 +455,10 @@ inline bool operator!=(vec4 v1, vec4 v2)
 inline vec4 operator+(vec4 v1, vec4 v2)
 {
 	return vec4
-	{
-		v1[0] + v2[0],
-		v1[1] + v2[1],
-		v1[2] + v2[2],
+	{ 
+		v1[0] + v2[0], 
+		v1[1] + v2[1], 
+		v1[2] + v2[2], 
 		v1[3] + v2[3]
 	};
 }
@@ -466,8 +466,8 @@ inline vec4 operator+(vec4 v1, vec4 v2)
 inline vec4 operator-(vec4 v1, vec4 v2)
 {
 	return vec4
-	{
-		v1[0] - v2[0],
+	{ 
+		v1[0] - v2[0], 
 		v1[1] - v2[1],
 		v1[2] - v2[2],
 		v1[3] - v2[3]
@@ -489,10 +489,10 @@ inline vec4& operator-=(vec4& v1, vec4 v2)
 inline vec4 operator+(vec4 v, float f)
 {
 	return vec4
-	{
+	{ 
 		v[0] + f,
-		v[1] + f,
-		v[2] + f,
+		v[1] + f, 
+		v[2] + f, 
 		v[3] + f
 	};
 }
@@ -500,8 +500,8 @@ inline vec4 operator+(vec4 v, float f)
 inline vec4 operator-(vec4 v, float f)
 {
 	return vec4
-	{
-		v[0] - f,
+	{ 
+		v[0] - f, 
 		v[1] - f,
 		v[2] - f,
 		v[3] - f
@@ -511,8 +511,8 @@ inline vec4 operator-(vec4 v, float f)
 inline vec4 operator*(vec4 v, float f)
 {
 	return vec4
-	{
-		v[0] * f,
+	{ 
+		v[0] * f, 
 		v[1] * f,
 		v[2] * f,
 		v[3] * f
@@ -522,8 +522,8 @@ inline vec4 operator*(vec4 v, float f)
 inline vec4 operator/(vec4 v, float f)
 {
 	return vec4
-	{
-		v[0] / f,
+	{ 
+		v[0] / f, 
 		v[1] / f,
 		v[2] / f,
 		v[3] / f
@@ -533,10 +533,10 @@ inline vec4 operator/(vec4 v, float f)
 inline vec4 operator+(float f, vec4 v)
 {
 	return vec4
-	{
+	{ 
 		f + v[0],
-		f + v[1],
-		f + v[2],
+		f + v[1], 
+		f + v[2], 
 		f + v[3]
 	};
 }
@@ -544,10 +544,10 @@ inline vec4 operator+(float f, vec4 v)
 inline vec4 operator-(float f, vec4 v)
 {
 	return vec4
-	{
+	{ 
 		f - v[0],
-		f - v[1],
-		f - v[2],
+		f - v[1], 
+		f - v[2], 
 		f - v[3]
 	};
 }
@@ -555,10 +555,10 @@ inline vec4 operator-(float f, vec4 v)
 inline vec4 operator*(float f, vec4 v)
 {
 	return vec4
-	{
+	{ 
 		f * v[0],
-		f * v[1],
-		f * v[2],
+		f * v[1], 
+		f * v[2], 
 		f * v[3]
 	};
 }
@@ -566,10 +566,10 @@ inline vec4 operator*(float f, vec4 v)
 inline vec4 operator/(float f, vec4 v)
 {
 	return vec4
-	{
+	{ 
 		f / v[0],
-		f / v[1],
-		f / v[2],
+		f / v[1], 
+		f / v[2], 
 		f / v[3]
 	};
 }
@@ -638,8 +638,8 @@ struct mat3
 		}
 	{}
 
-	mat3(float v11, float v12, float v13,
-		float v21, float v22, float v23,
+	mat3(float v11, float v12, float v13, 
+		float v21, float v22, float v23, 
 		float v31, float v32, float v33):
 			v{
 				{ v11, v12, v13 },
@@ -702,9 +702,9 @@ inline bool operator!=(mat3 m1, mat3 m2)
 inline mat3 operator+(mat3 m1, mat3 m2)
 {
 	return mat3
-	{
-		m1[0] + m2[0],
-		m1[1] + m2[1],
+	{ 
+		m1[0] + m2[0], 
+		m1[1] + m2[1], 
 		m1[2] + m2[2]
 	};
 }
@@ -712,8 +712,8 @@ inline mat3 operator+(mat3 m1, mat3 m2)
 inline mat3 operator-(mat3 m1, mat3 m2)
 {
 	return mat3
-	{
-		m1[0] - m2[0],
+	{ 
+		m1[0] - m2[0], 
 		m1[1] - m2[1],
 		m1[2] - m2[2]
 	};
@@ -727,9 +727,9 @@ inline mat3 operator*(mat3 m1, mat3 m2)
 	{
 		for (size_t j = 0; j < 3; ++j)
 		{
-			result[i][j] =
-				m1[i][0] * m2[0][j] +
-				m1[i][1] * m2[1][j] +
+			result[i][j] = 
+				m1[i][0] * m2[0][j] + 
+				m1[i][1] * m2[1][j] + 
 				m1[i][2] * m2[2][j];
 		}
 	}
@@ -768,9 +768,9 @@ inline mat3& operator*=(mat3& m1, mat3 m2)
 inline mat3 operator+(mat3 m, float f)
 {
 	return mat3
-	{
-		m[0] + f,
-		m[1] + f,
+	{ 
+		m[0] + f, 
+		m[1] + f, 
 		m[2] + f
 	};
 }
@@ -778,8 +778,8 @@ inline mat3 operator+(mat3 m, float f)
 inline mat3 operator-(mat3 m, float f)
 {
 	return mat3
-	{
-		m[0] - f,
+	{ 
+		m[0] - f, 
 		m[1] - f,
 		m[2] - f
 	};
@@ -788,8 +788,8 @@ inline mat3 operator-(mat3 m, float f)
 inline mat3 operator*(mat3 m, float f)
 {
 	return mat3
-	{
-		m[0] * f,
+	{ 
+		m[0] * f, 
 		m[1] * f,
 		m[2] * f
 	};
@@ -798,8 +798,8 @@ inline mat3 operator*(mat3 m, float f)
 inline mat3 operator/(mat3 m, float f)
 {
 	return mat3
-	{
-		m[0] / f,
+	{ 
+		m[0] / f, 
 		m[1] / f,
 		m[2] / f
 	};
@@ -808,8 +808,8 @@ inline mat3 operator/(mat3 m, float f)
 inline mat3 operator+(float f, mat3 m)
 {
 	return mat3
-	{
-		f + m[0],
+	{ 
+		f + m[0], 
 		f + m[1],
 		f + m[2]
 	};
@@ -818,8 +818,8 @@ inline mat3 operator+(float f, mat3 m)
 inline mat3 operator-(float f, mat3 m)
 {
 	return mat3
-	{
-		f - m[0],
+	{ 
+		f - m[0], 
 		f - m[1],
 		f - m[2]
 	};
@@ -828,8 +828,8 @@ inline mat3 operator-(float f, mat3 m)
 inline mat3 operator*(float f, mat3 m)
 {
 	return mat3
-	{
-		f * m[0],
+	{ 
+		f * m[0], 
 		f * m[1],
 		f * m[2]
 	};
@@ -838,8 +838,8 @@ inline mat3 operator*(float f, mat3 m)
 inline mat3 operator/(float f, mat3 m)
 {
 	return mat3
-	{
-		f / m[0],
+	{ 
+		f / m[0], 
 		f / m[1],
 		f / m[2]
 	};
@@ -878,22 +878,22 @@ struct mat4
 
     mat4(float d = 1.0f):
 		v{
-			{ d,    0.0f, 0.0f, 0.0f },
+			{ d,    0.0f, 0.0f, 0.0f }, 
 			{ 0.0f, d,    0.0f, 0.0f },
 			{ 0.0f, 0.0f, d,    0.0f },
 			{ 0.0f, 0.0f, 0.0f, d    },
 		}
 	{}
 
-	mat4(float v11, float v12, float v13, float v14,
-		float v21, float v22, float v23, float v24,
-		float v31, float v32, float v33, float v34,
+	mat4(float v11, float v12, float v13, float v14, 
+		float v21, float v22, float v23, float v24, 
+		float v31, float v32, float v33, float v34, 
 		float v41, float v42, float v43, float v44):
 			v{
-				{ v11, v12, v13, v14},
-				{ v21, v22, v23, v24},
-				{ v31, v32, v33, v34},
-				{ v41, v42, v43, v44},
+				{ v11, v12, v13, v14}, 
+				{ v21, v22, v23, v24},  
+				{ v31, v32, v33, v34},  
+				{ v41, v42, v43, v44}, 
 			}
 	{}
 
@@ -962,10 +962,10 @@ inline bool operator!=(mat4 m1, mat4 m2)
 inline mat4 operator+(mat4 m1, mat4 m2)
 {
 	return mat4
-	{
-		m1[0] + m2[0],
-		m1[1] + m2[1],
-		m1[2] + m2[2],
+	{ 
+		m1[0] + m2[0], 
+		m1[1] + m2[1], 
+		m1[2] + m2[2], 
 		m1[3] + m2[3]
 	};
 }
@@ -973,8 +973,8 @@ inline mat4 operator+(mat4 m1, mat4 m2)
 inline mat4 operator-(mat4 m1, mat4 m2)
 {
 	return mat4
-	{
-		m1[0] - m2[0],
+	{ 
+		m1[0] - m2[0], 
 		m1[1] - m2[1],
 		m1[2] - m2[2],
 		m1[3] - m2[3]
@@ -989,10 +989,10 @@ inline mat4 operator*(mat4 m1, mat4 m2)
 	{
 		for (size_t j = 0; j < 4; ++j)
 		{
-			result[i][j] =
-				m1[i][0] * m2[0][j] +
-				m1[i][1] * m2[1][j] +
-				m1[i][2] * m2[2][j] +
+			result[i][j] = 
+				m1[i][0] * m2[0][j] + 
+				m1[i][1] * m2[1][j] + 
+				m1[i][2] * m2[2][j] + 
 				m1[i][3] * m2[3][j];
 		}
 	}
@@ -1032,10 +1032,10 @@ inline mat4& operator*=(mat4& m1, mat4 m2)
 inline mat4 operator+(mat4 m, float f)
 {
 	return mat4
-	{
-		m[0] + f,
-		m[1] + f,
-		m[2] + f,
+	{ 
+		m[0] + f, 
+		m[1] + f, 
+		m[2] + f, 
 		m[3] + f
 	};
 }
@@ -1043,8 +1043,8 @@ inline mat4 operator+(mat4 m, float f)
 inline mat4 operator-(mat4 m, float f)
 {
 	return mat4
-	{
-		m[0] - f,
+	{ 
+		m[0] - f, 
 		m[1] - f,
 		m[2] - f,
 		m[3] - f
@@ -1054,8 +1054,8 @@ inline mat4 operator-(mat4 m, float f)
 inline mat4 operator*(mat4 m, float f)
 {
 	return mat4
-	{
-		m[0] * f,
+	{ 
+		m[0] * f, 
 		m[1] * f,
 		m[2] * f,
 		m[3] * f
@@ -1065,8 +1065,8 @@ inline mat4 operator*(mat4 m, float f)
 inline mat4 operator/(mat4 m, float f)
 {
 	return mat4
-	{
-		m[0] / f,
+	{ 
+		m[0] / f, 
 		m[1] / f,
 		m[2] / f,
 		m[3] / f
@@ -1076,10 +1076,10 @@ inline mat4 operator/(mat4 m, float f)
 inline mat4 operator+(float f, mat4 m)
 {
 	return mat4
-	{
-		f + m[0],
-		f + m[1],
-		f + m[2],
+	{ 
+		f + m[0], 
+		f + m[1], 
+		f + m[2], 
 		f + m[3]
 	};
 }
@@ -1087,10 +1087,10 @@ inline mat4 operator+(float f, mat4 m)
 inline mat4 operator-(float f, mat4 m)
 {
 	return mat4
-	{
-		f - m[0],
-		f - m[1],
-		f - m[2],
+	{ 
+		f - m[0], 
+		f - m[1], 
+		f - m[2], 
 		f - m[3]
 	};
 }
@@ -1098,10 +1098,10 @@ inline mat4 operator-(float f, mat4 m)
 inline mat4 operator*(float f, mat4 m)
 {
 	return mat4
-	{
-		f * m[0],
-		f * m[1],
-		f * m[2],
+	{ 
+		f * m[0], 
+		f * m[1], 
+		f * m[2], 
 		f * m[3]
 	};
 }
@@ -1109,10 +1109,10 @@ inline mat4 operator*(float f, mat4 m)
 inline mat4 operator/(float f, mat4 m)
 {
 	return mat4
-	{
-		f / m[0],
-		f / m[1],
-		f / m[2],
+	{ 
+		f / m[0], 
+		f / m[1], 
+		f / m[2], 
 		f / m[3]
 	};
 }
@@ -1148,14 +1148,14 @@ inline mat4& operator/=(mat4& m, float f)
 struct mat24
 {
     vec4 v[2];
-
+    
     mat24(float d = 1.0f):
         v{
             { d,    0.0f, 0.0f, 0.0f },
             { 0.0f, d,    0.0f, 0.0f },
         }
     {}
-
+    
     mat24(float v11, float v12, float v13, float v14,
          float v21, float v22, float v23, float v24):
         v{
@@ -1163,39 +1163,39 @@ struct mat24
             { v21, v22, v23, v24},
         }
     {}
-
+    
     mat24(vec4 v1, vec4 v2):
         v{
             { v1[0], v1[1], v1[2], v1[3] },
             { v2[0], v2[1], v2[2], v2[3] },
         }
     {}
-
+    
     mat24(vec2 v1, vec2 v2, vec2 v3, vec2 v4):
         v{
             { v1[0], v2[0], v3[0], v4[0] },
             { v1[1], v2[1], v3[1], v4[1] },
         }
     {}
-
+    
     const vec4& operator[](size_t ind) const
     {
         assert(ind >= 0 && ind <= 2);
         return v[ind];
     }
-
+    
     vec4& operator[](size_t ind)
     {
         assert(ind >= 0 && ind <= 2);
         return v[ind];
     }
-
+    
     vec4 col(size_t ind) const
     {
         assert(ind >= 0 && ind <= 2);
         return{ v[0][ind], v[1][ind] };
     }
-
+    
     vec4 row(size_t ind) const
     {
         assert(ind >= 0 && ind <= 2);
@@ -1235,7 +1235,7 @@ inline mat24 operator-(mat24 m1, mat24 m2)
 inline mat24 operator*(mat24 m1, mat4 m2)
 {
     mat24 result;
-
+    
     for (size_t i = 0; i < 2; ++i)
     {
         for (size_t j = 0; j < 4; ++j)
@@ -1247,7 +1247,7 @@ inline mat24 operator*(mat24 m1, mat4 m2)
                 m1[i][3] * m2[3][j];
         }
     }
-
+    
     return result;
 }
 
@@ -1571,8 +1571,8 @@ inline mat3 transpose(mat3 m)
 {
 	return mat3
 	{
-		m.col(0),
-		m.col(1),
+		m.col(0), 
+		m.col(1), 
 		m.col(2)
 	};
 }
@@ -1581,8 +1581,8 @@ inline mat4 transpose(mat4 m)
 {
 	return mat4
 	{
-		m.col(0),
-		m.col(1),
+		m.col(0), 
+		m.col(1), 
 		m.col(2),
 		m.col(3)
 	};
@@ -1625,7 +1625,7 @@ inline mat3 inverse(mat3 m)
 	float invdet = 1.0f / det;
 
 	mat3 result;
-
+	
 	result[0][0] = (m[1][1] * m[2][2] - m[2][1] * m[1][2]) * invdet;
 	result[0][1] = (m[0][2] * m[2][1] - m[0][1] * m[2][2]) * invdet;
 	result[0][2] = (m[0][1] * m[1][2] - m[0][2] * m[1][1]) * invdet;
@@ -1789,7 +1789,7 @@ inline mat4 scale(vec3 v)
 ///////////////////////////////////////////////////////////////////////////////
 inline mat3 windowToViewport2(vec2 windowPos, vec2 windowSize, vec2 viewportPos, vec2 viewportSize)
 {
-	return
+	return 
         translate(viewportPos) *
         scale(vec2(viewportSize.x / windowSize.x, viewportSize.y / windowSize.y)) *
         translate(-windowPos);
@@ -1895,72 +1895,72 @@ inline mat4 cavalier(float angle, float shortening)
 ///////////////////////////////////////////////////////////////////////////////
 inline void printMathObject(bool b, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%sbool(" __BGM_FORMAT_B ")\n",
-		prefix,
+	fprintf(fout, "%sbool(" __BGM_FORMAT_B ")\n", 
+		prefix,  
 		b ? "true" : "false");
 }
 
 inline void printMathObject(int i, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%sint(" __BGM_FORMAT_I ")\n",
-		prefix,
+	fprintf(fout, "%sint(" __BGM_FORMAT_I ")\n", 
+		prefix,  
 		i);
 }
 
 inline void printMathObject(float f, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%sfloat(" __BGM_FORMAT_F ")\n",
-		prefix,
+	fprintf(fout, "%sfloat(" __BGM_FORMAT_F ")\n", 
+		prefix,  
 		f);
 }
 
 inline void printMathObject(vec2 v, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%svec2("
-		__BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n",
-		prefix,
+	fprintf(fout, "%svec2(" 
+		__BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n", 
+		prefix, 
 		v[0], v[1]);
 }
 
 inline void printMathObject(vec3 v, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%svec3("
-		__BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n",
-		prefix,
+	fprintf(fout, "%svec3(" 
+		__BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n", 
+		prefix, 
 		v[0], v[1], v[2]);
 }
 
 inline void printMathObject(vec4 v, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%svec4("
-		__BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n",
-		prefix,
+	fprintf(fout, "%svec4(" 
+		__BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ", " __BGM_FORMAT_F ")\n", 
+		prefix, 
 		v[0], v[1], v[2], v[3]);
 }
 
 inline void printMathObject(mat3 m, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%smat3\n(\n"
-		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"
-		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"
+	fprintf(fout, "%smat3\n(\n" 
+		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"  
+		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"  
 		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F "\n)\n",
-		prefix,
-		m[0][0], m[0][1], m[0][2],
-		m[1][0], m[1][1], m[1][2],
+		prefix, 
+		m[0][0], m[0][1], m[0][2], 
+		m[1][0], m[1][1], m[1][2], 
 		m[2][0], m[2][1], m[2][2]);
 }
 
 inline void printMathObject(mat4 m, const char* prefix = "", FILE* fout = stdout)
 {
-	fprintf(fout, "%smat4\n(\n"
-		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"
-		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"
-		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"
+	fprintf(fout, "%smat4\n(\n" 
+		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"  
+		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"  
+		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", \n"  
 		__BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F ", "  __BGM_FORMAT_F "\n)\n",
-		prefix,
-		m[0][0], m[0][1], m[0][2], m[0][3],
-		m[1][0], m[1][1], m[1][2], m[1][3],
-		m[2][0], m[2][1], m[2][2], m[2][3],
+		prefix, 
+		m[0][0], m[0][1], m[0][2], m[0][3], 
+		m[1][0], m[1][1], m[1][2], m[1][3], 
+		m[2][0], m[2][1], m[2][2], m[2][3], 
 		m[3][0], m[3][1], m[3][2], m[3][3]);
 }
 

@@ -5,7 +5,6 @@
 
 #include <algorithm>    // std::sort()
 #include <vector>   // std::vector<>
-#include <iostream>
 
 #ifdef __APPLE__
 #  include <GLUT/glut.h>
@@ -26,7 +25,7 @@ mat4 w2v, Op, Pp, coordTrans, Rz, TR;
 vec3 camera, Xn, Yn, Zn, up = vec3(0.0f, 0.0f, 1.0f);
 GLfloat uCam = 5.5f, vCam = 1.5f, rCam = 3.0f;
 
-vec3 lightSource = vec3(10.0f, 10.0f, 10.0f);
+vec3 lightSource = vec3(0.0f, 0.0f, 10.0f);
 
 bool orthogonal = true;
 
@@ -175,7 +174,7 @@ void display() {
                 transformedPoint = TR * transformedPoint;
 
             if (transformedPoint.w != 0.0f)
-                f.vertices[j] = hToIh(transformedPoint);;
+                f.vertices[j] = hToIh(transformedPoint);
         }
 
         f.setNormalVector();
@@ -217,7 +216,7 @@ void display() {
                 transformedPoint = w2v * Pp * transformedPoint;
 
             if (transformedPoint.w != 0.0f)
-                f.vertices[j] = hToIh(transformedPoint);;
+                f.vertices[j] = hToIh(transformedPoint);
         }
 
         glLineWidth(2.0f);
@@ -241,9 +240,9 @@ void keyboard(unsigned char key, int x, int y) {
 	switch (key) {
     	case 27: exit(0); break;
 
-    	case 'a': uCam -= delta;
+    	case 'a': uCam -= pi() / 120;
     		      if(uCam <= 0) uCam = two_pi(); break;
-    	case 'd': uCam += delta;
+    	case 'd': uCam += pi() / 120;
     		      if(uCam >= two_pi()) uCam = 0; break;
 
     	case 'w': vCam += delta; break;

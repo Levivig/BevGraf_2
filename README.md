@@ -1,4 +1,4 @@
-# README #
+# Introduction to Computer Graphics - Project 1 #
 
 
 ### What is this repository for? ###

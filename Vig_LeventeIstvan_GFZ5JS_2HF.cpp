@@ -3,17 +3,16 @@
 //	2017/18	DE-IK PTI
 //
 
-#include <algorithm>    // std::sort()
-#include <vector>   // std::vector<>
+#include <algorithm> // std::sort()
+#include <vector>    // std::vector<>
 
 #ifdef __APPLE__
-#  include <GLUT/glut.h>
+#include <GLUT/glut.h>
 #else
-#  include <GL/glut.h>
+#include <GL/glut.h>
 #endif
 
 #include <bevgrafmath2017.h>
-
 
 GLint winWidth = 800, winHeight = 800;
 
@@ -34,32 +33,37 @@ GLfloat alphaZ = 0.0f, delta = 0.05f, deltaT = pi() / 24.0f;
 
 GLfloat R = 2.0f, r = 0.66f;
 
-vec3 cube[8] = {vec3(-0.5, -0.5, 0.5),  vec3(0.5, -0.5, 0.5),
+vec3 cube[8] = {vec3(-0.5, -0.5, 0.5), vec3(0.5, -0.5, 0.5),
                 vec3(-0.5, -0.5, -0.5), vec3(0.5, -0.5, -0.5),
-                vec3(-0.5, 0.5, 0.5),   vec3(0.5, 0.5, 0.5),
-                vec3(-0.5, 0.5, -0.5),  vec3(0.5, 0.5, -0.5)};
+                vec3(-0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5),
+                vec3(-0.5, 0.5, -0.5), vec3(0.5, 0.5, -0.5)};
 
-struct Face {
+struct Face
+{
     vec3 vertices[4];
     vec3 centerPoint;
     vec3 normalVecor;
     vec3 color;
-    char object;    //  Cube or Torus
+    char object; //  Cube or Torus
 
-    void setNormalVector() {
-    	this->normalVecor = cross(this->vertices[1] - this->vertices[0],
+    void setNormalVector()
+    {
+        this->normalVecor = cross(this->vertices[1] - this->vertices[0],
                                   this->vertices[2] - this->vertices[0]);
     }
 
-    void setCenterPoint() {
-    	this->centerPoint = (this->vertices[0] + this->vertices[1] +
-                             this->vertices[2] + this->vertices[3]) / 4.0f;
+    void setCenterPoint()
+    {
+        this->centerPoint = (this->vertices[0] + this->vertices[1] +
+                             this->vertices[2] + this->vertices[3]) /
+                            4.0f;
     }
 };
 
 std::vector<Face> faces;
 
-void initFaces() {
+void initFaces()
+{
     faces.clear();
 
     Face f;
@@ -103,56 +107,61 @@ void initFaces() {
 
     f.object = 't';
 
-    for (GLfloat u = 0.0f; u <= two_pi(); u += deltaT) {
-        for (GLfloat v = 0.0f; v <= two_pi(); v += deltaT) {
+    for (GLfloat u = 0.0f; u <= two_pi(); u += deltaT)
+    {
+        for (GLfloat v = 0.0f; v <= two_pi(); v += deltaT)
+        {
             f.vertices[0] = vec3((R + r * cos(u)) * cos(v),
                                  (R + r * cos(u)) * sin(v),
-                                  r * sin(u));
+                                 r * sin(u));
             f.vertices[1] = vec3((R + r * cos(u)) * cos(v + deltaT),
                                  (R + r * cos(u)) * sin(v + deltaT),
-                                  r * sin(u));
+                                 r * sin(u));
             f.vertices[2] = vec3((R + r * cos(u + deltaT)) * cos(v + deltaT),
                                  (R + r * cos(u + deltaT)) * sin(v + deltaT),
-                                  r * sin(u + deltaT));
+                                 r * sin(u + deltaT));
             f.vertices[3] = vec3((R + r * cos(u + deltaT)) * cos(v),
                                  (R + r * cos(u + deltaT)) * sin(v),
-                                  r * sin(u + deltaT));
+                                 r * sin(u + deltaT));
             faces.push_back(f);
         }
     }
 }
 
-void initTransformations() {
-	Rz = rotateZ(alphaZ);
+void initTransformations()
+{
+    Rz = rotateZ(alphaZ);
 
-	camera = vec3(rCam * cos(uCam), rCam * sin(uCam), vCam);
+    camera = vec3(rCam * cos(uCam), rCam * sin(uCam), vCam);
 
-	Zn = normalize(vec3(0.0f, 0.0f, 0.0f) - (-camera));
-	Xn = normalize(cross(up, Zn));
-	Yn = normalize(cross(Zn, Xn));
+    Zn = normalize(vec3(0.0f, 0.0f, 0.0f) - (-camera));
+    Xn = normalize(cross(up, Zn));
+    Yn = normalize(cross(Zn, Xn));
 
-	coordTrans = coordinateTransform(camera, Xn, Yn, Zn);
+    coordTrans = coordinateTransform(camera, Xn, Yn, Zn);
     TR = coordTrans * Rz;
 
     Op = ortho();
     Pp = perspective(center);
 
-	w2v = windowToViewport3(windowPosition, windowSize,
+    w2v = windowToViewport3(windowPosition, windowSize,
                             viewportPosition, viewportSize);
 }
 
-void init() {
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+void init()
+{
+    glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glOrtho(0.0f, winWidth, 0.0f, winHeight, 0.0f, 2.0f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrtho(0.0f, winWidth, 0.0f, winHeight, 0.0f, 2.0f);
 
     initFaces();
-	initTransformations();
+    initTransformations();
 }
 
-void display() {
+void display()
+{
     glClear(GL_COLOR_BUFFER_BIT);
 
     std::vector<Face> transformedFaces;
@@ -162,11 +171,14 @@ void display() {
                             transformedLight.y,
                             transformedLight.z);
 
-    for (int i = 0; i < faces.size(); i++) {
+    for (int i = 0; i < faces.size(); i++)
+    {
         Face f = faces[i];
 
-        for (int j = 0; j < 4; j++) {
-            vec4 transformedPoint = ihToH(f.vertices[j]);;
+        for (int j = 0; j < 4; j++)
+        {
+            vec4 transformedPoint = ihToH(f.vertices[j]);
+            ;
 
             if (f.object == 'c')
                 transformedPoint = coordTrans * transformedPoint;
@@ -181,11 +193,14 @@ void display() {
         f.setCenterPoint();
 
         if ((orthogonal && f.normalVecor.z > 0.0f) ||
-           (!orthogonal && dot(normalize(f.normalVecor),
-           normalize(vec3(0.0f, 0.0f, center) - f.centerPoint)) > 0.0f)) {
+            (!orthogonal && dot(normalize(f.normalVecor),
+                                normalize(vec3(0.0f, 0.0f, center) - f.centerPoint)) > 0.0f))
+        {
 
             GLfloat c = (dot(normalize(f.normalVecor),
-                             normalize(resultLight)) + 1.0f) / 2.0f;
+                             normalize(resultLight)) +
+                         1.0f) /
+                        2.0f;
             f.color = vec3(c, c, c);
 
             transformedFaces.push_back(f);
@@ -194,21 +209,24 @@ void display() {
 
     if (orthogonal)
         std::sort(transformedFaces.begin(), transformedFaces.end(),
-        [](Face a, Face b) {
-            return a.centerPoint.z < b.centerPoint.z;
-        });
+                  [](Face a, Face b) {
+                      return a.centerPoint.z < b.centerPoint.z;
+                  });
     else
         std::sort(transformedFaces.begin(), transformedFaces.end(),
-        [](Face a, Face b) {
-            return dist(a.centerPoint, vec3(0.0f, 0.0f, center)) >
-                   dist(b.centerPoint, vec3(0.0f, 0.0f, center));
-        });
+                  [](Face a, Face b) {
+                      return dist(a.centerPoint, vec3(0.0f, 0.0f, center)) >
+                             dist(b.centerPoint, vec3(0.0f, 0.0f, center));
+                  });
 
-    for (int i = 0; i < transformedFaces.size(); i++) {
+    for (int i = 0; i < transformedFaces.size(); i++)
+    {
         Face f = transformedFaces[i];
 
-        for (int j = 0; j < 4; j++) {
-            vec4 transformedPoint = ihToH(f.vertices[j]);;
+        for (int j = 0; j < 4; j++)
+        {
+            vec4 transformedPoint = ihToH(f.vertices[j]);
+            ;
 
             if (orthogonal)
                 transformedPoint = w2v * Op * transformedPoint;
@@ -236,45 +254,84 @@ void display() {
     glutSwapBuffers();
 }
 
-void keyboard(unsigned char key, int x, int y) {
-	switch (key) {
-    	case 27: exit(0); break;
+void keyboard(unsigned char key, int x, int y)
+{
+    switch (key)
+    {
+    case 27:
+        exit(0);
+        break;
 
-    	case 'a': uCam -= pi() / 120;
-    		      if(uCam <= 0) uCam = two_pi(); break;
-    	case 'd': uCam += pi() / 120;
-    		      if(uCam >= two_pi()) uCam = 0; break;
+    case 'a':
+        uCam -= pi() / 120;
+        if (uCam <= 0)
+            uCam = two_pi();
+        break;
+    case 'd':
+        uCam += pi() / 120;
+        if (uCam >= two_pi())
+            uCam = 0;
+        break;
 
-    	case 'w': vCam += delta; break;
-    	case 's': vCam -= delta; break;
+    case 'w':
+        vCam += delta;
+        break;
+    case 's':
+        vCam -= delta;
+        break;
 
-    	case 'r': rCam -= delta;
-                  if (rCam < 0.1f) rCam = 0.1f; break;
-    	case 't': rCam += delta;
-                  if (rCam > 20.0f) rCam = 20.0f; break;
+    case 'r':
+        rCam -= delta;
+        if (rCam < 0.1f)
+            rCam = 0.1f;
+        break;
+    case 't':
+        rCam += delta;
+        if (rCam > 20.0f)
+            rCam = 20.0f;
+        break;
 
-        case 'q': center -= delta;
-                  if (center < 0.01f) center = 0.01; break;
-    	case 'e': center += delta; break;
+    case 'q':
+        center -= delta;
+        if (center < 0.01f)
+            center = 0.01;
+        break;
+    case 'e':
+        center += delta;
+        break;
 
-        case 'n': R -= delta;
-                  if (R < 1.0f) R = 1.0f; break;
-        case 'm': R += delta; break;
-        case 'j': r -= delta;
-                  if (r < 0.01f) r = 0.01f; break;
-        case 'k': r += delta; break;
+    case 'n':
+        R -= delta;
+        if (R < 1.0f)
+            R = 1.0f;
+        break;
+    case 'm':
+        R += delta;
+        break;
+    case 'j':
+        r -= delta;
+        if (r < 0.01f)
+            r = 0.01f;
+        break;
+    case 'k':
+        r += delta;
+        break;
 
-        case 'v': orthogonal = !orthogonal; break;
-	}
+    case 'v':
+        orthogonal = !orthogonal;
+        break;
+    }
 
     initFaces();
-	initTransformations();
-	glutPostRedisplay();
+    initTransformations();
+    glutPostRedisplay();
 }
 
-void update(int v) {
+void update(int v)
+{
     alphaZ += 0.002f;
-    if(alphaZ >= two_pi()) alphaZ = 0.0f;
+    if (alphaZ >= two_pi())
+        alphaZ = 0.0f;
 
     initTransformations();
     glutPostRedisplay();
@@ -282,18 +339,19 @@ void update(int v) {
     glutTimerFunc(10, update, 0);
 }
 
-int main(int argc, char** argv) {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(winWidth, winHeight);
-	glutInitWindowPosition(100, 100);
-	glutCreateWindow("2. Beadando - Vig Levente Istvan (GFZ5JS)");
+int main(int argc, char **argv)
+{
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitWindowSize(winWidth, winHeight);
+    glutInitWindowPosition(100, 100);
+    glutCreateWindow("2. Beadando - Vig Levente Istvan (GFZ5JS)");
 
-	glutDisplayFunc(display);
+    glutDisplayFunc(display);
     glutKeyboardFunc(keyboard);
     glutTimerFunc(10, update, 0);
 
-	init();
-	glutMainLoop();
-	return 0;
+    init();
+    glutMainLoop();
+    return 0;
 }

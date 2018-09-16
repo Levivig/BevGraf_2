@@ -1,4 +1,4 @@
-# Introduction to Computer Graphics - Project 1 #
+# Introduction to Computer Graphics - Project 2 #
 
 
 ### What is this repository for? ###
